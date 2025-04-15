@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
  */
 public class Entity {
     protected BufferedImage sprite;
+    protected BufferedImage spriteDroite;
+    protected BufferedImage spriteGauche;
     protected double x, y;
     
     public void miseAJour() {
