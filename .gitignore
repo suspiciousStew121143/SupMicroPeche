@@ -51,3 +51,4 @@ target/
 # OS generated files
 .DS_Store
 Thumbs.db
+/SupMicroPeche/nbproject/private/
