@@ -55,11 +55,11 @@ public class Fish extends Entity {
         if (x < 0) { // collision avec le bord gauche de la scene
             x = 0;
         }
-        if (y > 324 - sprite.getHeight()) { // collision avec le bord Haut de la scene
+        if (y > 324 - sprite.getHeight()) { // collision avec le bord Bas de la scene
             y = 324 - sprite.getHeight();
         }
-        if (y < 0) { // collision avec le bord inferieur de la scene
-            y = 0;
+        if (y < 50+ sprite.getHeight()) { // collision avec le bord haut de la scene
+            y = 50+ sprite.getHeight();
         }
     }
 

@@ -24,9 +24,9 @@ public class Jeu {
     private Boat aBoat;
 
     public Jeu() {
-        this.aWaste = new Waste();
-        this.aFish = new Fish();
         this.aBoat = new Boat();
+        this.aWaste = new Waste(aBoat);
+        this.aFish = new Fish();
         try {
             this.decor = ImageIO.read(getClass().getResource("../assets/Background.png"));
         } catch (IOException ex) {
@@ -40,9 +40,9 @@ public class Jeu {
         contexte.drawImage(this.decor, 0, 0, null);
 
         // 2. Rendu du sprites
+        contexte.drawImage(this.aBoat.sprite, (int) this.aBoat.getX(), (int) this.aBoat.getY(), null);
         contexte.drawImage(this.aWaste.sprite, (int) this.aWaste.getX(), (int) this.aWaste.getY(), null);
         contexte.drawImage(this.aFish.sprite, (int) this.aFish.getX(), (int) this.aFish.getY(), null);
-        contexte.drawImage(this.aBoat.sprite, (int) this.aBoat.getX(), (int) this.aBoat.getY(), null);
 
         // 3. Rendu du textes
         contexte.drawString("Score : " + score, 10, 20);
@@ -52,11 +52,11 @@ public class Jeu {
         // 1. MAJ du poisson en fonction des commandes des joueurs
         this.aFish.miseAJour();
         // 2. MAJ des autres éléments (objets, monstres, etc.)
-        this.aWaste.miseAJour();
         this.aBoat.miseAJour();
+        this.aWaste.miseAJour();
         // 3. Gérer les intéractions (collisions et autres règles)
         if (this.aWaste.getY() > 324 - aWaste.getHeight()) {
-            this.aWaste.lancer();
+            this.aWaste.lancer(aBoat);
         }
         if (this.aBoat.getX() > 576 ) {
             this.aBoat.lancer();
