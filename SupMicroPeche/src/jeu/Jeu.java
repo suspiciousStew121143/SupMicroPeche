@@ -21,10 +21,12 @@ public class Jeu {
     private int score;
     private Waste aWaste;
     private Fish aFish;
+    private Boat aBoat;
 
     public Jeu() {
         this.aWaste = new Waste();
         this.aFish = new Fish();
+        this.aBoat = new Boat();
         try {
             this.decor = ImageIO.read(getClass().getResource("../assets/Background.png"));
         } catch (IOException ex) {
@@ -40,6 +42,7 @@ public class Jeu {
         // 2. Rendu du sprites
         contexte.drawImage(this.aWaste.sprite, (int) this.aWaste.getX(), (int) this.aWaste.getY(), null);
         contexte.drawImage(this.aFish.sprite, (int) this.aFish.getX(), (int) this.aFish.getY(), null);
+        contexte.drawImage(this.aBoat.sprite, (int) this.aBoat.getX(), (int) this.aBoat.getY(), null);
 
         // 3. Rendu du textes
         contexte.drawString("Score : " + score, 10, 20);
@@ -50,19 +53,19 @@ public class Jeu {
         this.aFish.miseAJour();
         // 2. MAJ des autres éléments (objets, monstres, etc.)
         this.aWaste.miseAJour();
+        this.aBoat.miseAJour();
         // 3. Gérer les intéractions (collisions et autres règles)
-        if (FishCollideWaste()) {
-            this.incrementScore();
+        if (this.aWaste.getY() > 324 - aWaste.getHeight()) {
             this.aWaste.lancer();
+        }
+        if (this.aBoat.getX() > 576 ) {
+            this.aBoat.lancer();
         }
     }
 
-    public boolean estTermine() {
-        if (this.aWaste.getY() > 324 - aWaste.getHeight()) {
-            return true;
-        }
-        // Renvoie vrai si la partie est terminée (gagnée ou perdue)
-        return false;
+    public boolean estTermine() {        // Renvoie vrai si la partie est terminée (gagnée ou perdue)
+
+        return FishCollideWaste();
     }
 
     public Fish getFish() {
@@ -78,14 +81,10 @@ public class Jeu {
     }
 
     public boolean FishCollideWaste() {
-        if ((aWaste.getX() >= aFish.getX() + aFish.getWidth()) // trop à droite
+        return !((aWaste.getX() >= aFish.getX() + aFish.getWidth()) // trop à droite
                 || (aWaste.getX() + aWaste.getHeight() <= aFish.getX()) // trop à gauche
                 || (aWaste.getY() >= aFish.getY() + aFish.getHeight()) // trop en bas
-                || (aWaste.getY() + aWaste.getWidth() <= aFish.getY())) { // trop en haut
-            return false;
-        } else {
-            return true;
-        }
+                || (aWaste.getY() + aWaste.getWidth() <= aFish.getY())); // trop en haut
     }
 
 }
