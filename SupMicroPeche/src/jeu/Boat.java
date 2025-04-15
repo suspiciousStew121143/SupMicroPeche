@@ -18,7 +18,9 @@ public class Boat extends Entity{
     
     public Boat(){
         try {
-            this.sprite = ImageIO.read(getClass().getResource("../assets/washer.png"));
+            this.spriteDroite = ImageIO.read(getClass().getResource("../assets/Boat_Right.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("../assets/Boat_Left.png"));
+            this.sprite = spriteDroite; // par défaut, le bâteau est orienté vers la droite
         } catch (IOException ex) {
             Logger.getLogger(Boat.class.getName()).log(Level.SEVERE, null, ex);
         }
