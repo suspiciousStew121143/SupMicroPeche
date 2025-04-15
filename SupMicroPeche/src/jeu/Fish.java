@@ -17,8 +17,12 @@ import javax.imageio.ImageIO;
  */
 public class Fish extends Entity {
 
-    private boolean toucheGauche, toucheDroite, toucheBas, toucheHaut;
-
+    protected boolean toucheGauche, toucheDroite, toucheBas, toucheHaut;
+    private String name;
+    private float speed;
+    private int healthBar;
+    private float knockBack;
+    
     public Fish() {
         try {
             this.spriteDroite = ImageIO.read(getClass().getResource("../assets/ClownfishRight.png"));
@@ -65,6 +69,14 @@ public class Fish extends Entity {
         }
     }
 
+    
+    public void useAbility(){
+
+    }
+    
+    
+    
+    
     public void setToucheGauche(boolean etat) {
         this.toucheGauche = etat;
         if (etat) {

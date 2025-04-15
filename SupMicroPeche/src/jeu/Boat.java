@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
  */
 public class Boat extends Entity{
     
+    private int a=1;
     
     public Boat(){
         try {
@@ -28,14 +29,18 @@ public class Boat extends Entity{
     }
     
    
-    
-    @Override
-    public void miseAJour() {
-        x = x+3;
+    public void miseAJour(Boat b) {
+        if(x>(576-b.getWidth())){
+            a=-1;
+        }    
+        if(x<0){
+            a=1; 
+        }
+        x=x+a*3;
     }
     
     public void lancer() {
-        this.x = 0;
+        this.x = 1;
         this.y = 40;
     }  
 }

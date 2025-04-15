@@ -16,6 +16,8 @@ public class Entity {
     protected BufferedImage spriteDroite;
     protected BufferedImage spriteGauche;
     protected double x, y;
+    protected float time; // Temps depuis la création d'une entité, pour utiliser certaines Abilitys.
+    protected int healthBar;
     
     public void miseAJour() {
     }
@@ -33,6 +35,22 @@ public class Entity {
 
     public double getY() {
         return y;
+    }
+    
+    public void setX(int x){
+        this.x = x;
+    }
+    
+    public void setY(int y){
+        this.y = y;
+    }
+    
+    public void setHealth(int h){
+        this.healthBar = h;
+    }
+    
+    public int getHealth(){
+        return healthBar;
     }
     
     public double getHeight() {
