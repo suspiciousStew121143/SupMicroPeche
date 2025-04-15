@@ -18,6 +18,9 @@ public class Entity {
     public void miseAJour() {
     }
     
+    public void lancer() {
+    }
+    
     public void rendu(Graphics2D contexte) {
         contexte.drawImage(this.sprite, (int) x, (int) y, null);
     }
