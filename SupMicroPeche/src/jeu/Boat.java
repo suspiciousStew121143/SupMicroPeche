@@ -15,7 +15,6 @@ import javax.imageio.ImageIO;
  */
 public class Boat extends Entity{
     
-    
     public Boat(){
         try {
             this.sprite = ImageIO.read(getClass().getResource("../assets/washer.png"));
