@@ -25,7 +25,7 @@ public class Jeu {
     private Fish aFish;
     private Boat aBoat;
     
-   
+  
 
     public Jeu() {
         
