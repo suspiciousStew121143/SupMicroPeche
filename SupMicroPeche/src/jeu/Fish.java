@@ -21,7 +21,9 @@ public class Fish extends Entity {
 
     public Fish() {
         try {
-            this.sprite = ImageIO.read(getClass().getResource("../assets/Clownfish.png"));
+            this.spriteDroite = ImageIO.read(getClass().getResource("../assets/ClownfishRight.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("../assets/ClownfishLeft.png"));
+            this.sprite = spriteDroite; // par défaut, le poisson regarde à droite
         } catch (IOException ex) {
             Logger.getLogger(Fish.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -55,20 +57,28 @@ public class Fish extends Entity {
         if (x < 0) { // collision avec le bord gauche de la scene
             x = 0;
         }
-        if (y > 324 - sprite.getHeight()) { // collision avec le bord Haut de la scene
+        if (y > 324 - sprite.getHeight()) { // collision avec le bord Bas de la scene
             y = 324 - sprite.getHeight();
         }
-        if (y < 0) { // collision avec le bord inferieur de la scene
-            y = 0;
+        if (y < 50+ sprite.getHeight()) { // collision avec le bord haut de la scene
+            y = 50+ sprite.getHeight();
         }
     }
 
     public void setToucheGauche(boolean etat) {
         this.toucheGauche = etat;
+        if (etat) {
+            this.sprite = spriteGauche;
+        }
     }
+    
     public void setToucheDroite(boolean etat) {
         this.toucheDroite = etat;
+        if (etat) {
+            this.sprite = spriteDroite;
+        }
     }    
+    
     public void setToucheBas(boolean etat) {
         this.toucheBas = etat;
     }
