@@ -29,11 +29,9 @@ public class Jeu {
 
     public Jeu() {
         
-        this.aGlobeFish = new GlobeFish();
         this.aBoat = new Boat();
         this.aWaste = new Waste(aBoat);
         this.aFish = new Fish();
-        this.aGlobeFish = new GlobeFish();
         try {
             this.decor = ImageIO.read(getClass().getResource("../assets/Background.png"));
         } catch (IOException ex) {
@@ -56,7 +54,6 @@ public class Jeu {
         contexte.drawImage(this.aBoat.sprite, (int) this.aBoat.getX(), (int) this.aBoat.getY(), null);
         contexte.drawImage(this.aWaste.sprite, (int) this.aWaste.getX(), (int) this.aWaste.getY(), null);
         contexte.drawImage(this.aFish.sprite, (int) this.aFish.getX(), (int) this.aFish.getY(), null);
-        contexte.drawImage(this.aGlobeFish.sprite, (int) this.aGlobeFish.getX(), (int) this.aGlobeFish.getY(), null);
 
         // 3. Rendu du textes
         contexte.drawString("Score : " + score, 10, 20);
@@ -74,7 +71,6 @@ public class Jeu {
         // }
         this.aBoat.miseAJour(aBoat);
         this.aWaste.miseAJour();
-        this.aGlobeFish.miseAJour();
         // 3. Gérer les intéractions (collisions et autres règles)
         if (this.aWaste.getY() > 324 - aWaste.getHeight()) {
             this.aWaste.lancer(aBoat);
