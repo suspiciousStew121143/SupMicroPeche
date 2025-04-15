@@ -46,7 +46,7 @@ public class Jeu {
     }
 
     public void miseAJour() {
-        // 1. MAJ de l'avatar en fonction des commandes des joueurs
+        // 1. MAJ du poisson en fonction des commandes des joueurs
         this.aFish.miseAJour();
         // 2. MAJ des autres éléments (objets, monstres, etc.)
         this.aWaste.miseAJour();
@@ -65,7 +65,7 @@ public class Jeu {
         return false;
     }
 
-    public Fish getAvatar() {
+    public Fish getFish() {
         return aFish;
     }
 

@@ -73,32 +73,32 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
     @Override
     public void keyPressed(KeyEvent evt) {
         if (evt.getKeyCode() == evt.VK_RIGHT) {
-            this.jeu.getAvatar().setToucheDroite(true);
+            this.jeu.getFish().setToucheDroite(true);
         }
         if (evt.getKeyCode() == evt.VK_LEFT) {
-            this.jeu.getAvatar().setToucheGauche(true);
+            this.jeu.getFish().setToucheGauche(true);
         }
         if (evt.getKeyCode() == evt.VK_UP) {
-            this.jeu.getAvatar().setToucheHaut(true);
+            this.jeu.getFish().setToucheHaut(true);
         }
         if (evt.getKeyCode() == evt.VK_DOWN) {
-            this.jeu.getAvatar().setToucheBas(true);
+            this.jeu.getFish().setToucheBas(true);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent evt) {
         if (evt.getKeyCode() == evt.VK_RIGHT) {
-            this.jeu.getAvatar().setToucheDroite(false);
+            this.jeu.getFish().setToucheDroite(false);
         }
         if (evt.getKeyCode() == evt.VK_LEFT) {
-            this.jeu.getAvatar().setToucheGauche(false);
+            this.jeu.getFish().setToucheGauche(false);
         }
         if (evt.getKeyCode() == evt.VK_UP) {
-            this.jeu.getAvatar().setToucheHaut(false);
+            this.jeu.getFish().setToucheHaut(false);
         }
         if (evt.getKeyCode() == evt.VK_DOWN) {
-            this.jeu.getAvatar().setToucheBas(false);
+            this.jeu.getFish().setToucheBas(false);
         }
     }
     
