@@ -32,15 +32,18 @@ public class Boat extends Entity{
     public void miseAJour(Boat b) {
         if(x>(576-b.getWidth())){
             a=-1;
+            this.sprite = this.spriteGauche;
         }    
         if(x<0){
             a=1; 
+            this.sprite = this.spriteDroite;
         }
         x=x+a*3;
+        
     }
     
     public void lancer() {
         this.x = 1;
-        this.y = 40;
+        this.y = 50;
     }  
 }
