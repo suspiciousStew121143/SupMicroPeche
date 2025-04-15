@@ -72,32 +72,32 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
 
     @Override
     public void keyPressed(KeyEvent evt) {
-        if (evt.getKeyCode() == evt.VK_RIGHT) {
+        if (evt.getKeyCode() == evt.VK_D) {
             this.jeu.getFish().setToucheDroite(true);
         }
-        if (evt.getKeyCode() == evt.VK_LEFT) {
+        if (evt.getKeyCode() == evt.VK_Q) {
             this.jeu.getFish().setToucheGauche(true);
         }
-        if (evt.getKeyCode() == evt.VK_UP) {
+        if (evt.getKeyCode() == evt.VK_Z) {
             this.jeu.getFish().setToucheHaut(true);
         }
-        if (evt.getKeyCode() == evt.VK_DOWN) {
+        if (evt.getKeyCode() == evt.VK_S) {
             this.jeu.getFish().setToucheBas(true);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent evt) {
-        if (evt.getKeyCode() == evt.VK_RIGHT) {
+        if (evt.getKeyCode() == evt.VK_D) {
             this.jeu.getFish().setToucheDroite(false);
         }
-        if (evt.getKeyCode() == evt.VK_LEFT) {
+        if (evt.getKeyCode() == evt.VK_Q) {
             this.jeu.getFish().setToucheGauche(false);
         }
-        if (evt.getKeyCode() == evt.VK_UP) {
+        if (evt.getKeyCode() == evt.VK_Z) {
             this.jeu.getFish().setToucheHaut(false);
         }
-        if (evt.getKeyCode() == evt.VK_DOWN) {
+        if (evt.getKeyCode() == evt.VK_S) {
             this.jeu.getFish().setToucheBas(false);
         }
     }
