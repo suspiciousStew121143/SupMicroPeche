@@ -16,14 +16,16 @@ import javax.imageio.ImageIO;
  * @author Louis
  */
 public class Waste extends Entity {
+    
+    private Boat b;
 
-    public Waste() {
+    public Waste(Boat b) {
         try {
             this.sprite = ImageIO.read(getClass().getResource("../assets/washer.png"));
         } catch (IOException ex) {
             Logger.getLogger(Waste.class.getName()).log(Level.SEVERE, null, ex);
         }
-        lancer();
+        lancer(b);
     }
 
     
@@ -33,9 +35,9 @@ public class Waste extends Entity {
     }
 
 
-    public void lancer() {
-        this.x = 15 + Math.random() * 576;
-        this.y = -27;
+    public void lancer(Boat b) {
+        this.x = b.getX();
+        this.y = b.getY()+b.getHeight();
     }
 
 }
