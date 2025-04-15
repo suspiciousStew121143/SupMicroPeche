@@ -65,20 +65,17 @@ public class Jeu {
         // 1. MAJ du poisson en fonction des commandes des joueurs
 
         // 2. MAJ des autres éléments (objets, monstres, etc.)
-        this.aBoat.miseAJour();
         
         // int n = this.entityList.size();
         // for (int i=0; i<n; i++ ) {
         //     Entity e = this.entityList.get(i);
         //     e.miseAJour();
         // }
+        this.aBoat.miseAJour(aBoat);
         this.aWaste.miseAJour();
         // 3. Gérer les intéractions (collisions et autres règles)
         if (this.aWaste.getY() > 324 - aWaste.getHeight()) {
             this.aWaste.lancer(aBoat);
-        }
-        if (this.aBoat.getX() > 576 ) {
-            this.aBoat.lancer();
         }
     }
 
