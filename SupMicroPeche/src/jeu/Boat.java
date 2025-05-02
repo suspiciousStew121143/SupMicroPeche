@@ -25,22 +25,24 @@ public class Boat extends Entity{
         } catch (IOException ex) {
             Logger.getLogger(Boat.class.getName()).log(Level.SEVERE, null, ex);
         }
+        lancer();
     }
     
    
-    public void miseAJour(Boat b) {
-        if(x>(576-b.getWidth())){
+    @Override
+    public void miseAJour() {
+        if(x>=(576-this.getWidth())){
             a=-1;
             this.sprite = this.spriteGauche;
         }    
-        if(x<0){
+        else if(x<=0){
             a=1; 
             this.sprite = this.spriteDroite;
         }
         x=x+a*3;
-        
     }
     
+    @Override
     public void lancer() {
         this.x = 1;
         this.y = 50;

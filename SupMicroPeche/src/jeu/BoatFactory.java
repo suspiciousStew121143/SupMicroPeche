@@ -17,10 +17,10 @@ public class BoatFactory {
     }
 
     // @override
-    public void createEntity() {
+    public Boat createEntity() {
         Boat b = new Boat();
-        b.lancer();
         this.jeu.getBoatList().add(b);
+        return b;
 
     }
 
