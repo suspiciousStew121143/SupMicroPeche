@@ -4,6 +4,8 @@
  */
 package jeu;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author lkerguil
@@ -11,17 +13,22 @@ package jeu;
 public class BoatFactory {
 
     private Jeu jeu;
-
+    private ArrayList<Boat> boatList;
+    
     public BoatFactory(Jeu jeu) {
         this.jeu = jeu;
+        this.boatList = new ArrayList<>();
     }
 
-    // @override
     public Boat createEntity() {
         Boat b = new Boat();
-        this.jeu.getBoatList().add(b);
+        this.boatList.add(b);
         return b;
-
     }
 
+    public ArrayList<Boat> getBoatList() {
+        return boatList;
+    }
+
+    
 }

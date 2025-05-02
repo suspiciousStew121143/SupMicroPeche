@@ -20,10 +20,10 @@ public class Jeu {
 
     private BufferedImage decor;
     private int score;
-    private ArrayList<Item> itemList;
-    private ArrayList<Fish> fishList;
-    private ArrayList<Boat> boatList;
-    private BoatFactory aBoatFactory;
+    
+    private ArrayList<Players> playersList;
+    private BoatFactory BoatFactory;
+    private ItemFactory ItemFactory;
 
     public Jeu() {
         // ===========================
@@ -34,9 +34,8 @@ public class Jeu {
         this.score = 0;
 
         // Initialisation des listes
-        this.boatList = new ArrayList<>();
-        this.fishList = new ArrayList<>();
-        this.itemList = new ArrayList<>();
+        this.playersList = new ArrayList<>();
+
 
         // Initialisation du décor
         try {
@@ -50,8 +49,10 @@ public class Jeu {
         // ========================
         // Uiliser l'usine à entités
         
-        this.aBoatFactory = new BoatFactory(this);
-        aBoatFactory.createEntity();
+        this.BoatFactory = new BoatFactory(this);
+        BoatFactory.createEntity();
+        
+        this.ItemFactory = new ItemFactory(this);
         
     }
    
@@ -63,15 +64,15 @@ public class Jeu {
         }
 
         // 2. Sprites
-        for (Item item : this.itemList) {
+        for (Item item : this.ItemFactory.getItemList()) {
             contexte.drawImage(item.sprite, (int) item.getX(), (int) item.getY(), null);
         }
 
-        for (Fish fish : this.fishList) {
+        for (Players fish : this.playersList) {
             contexte.drawImage(fish.sprite, (int) fish.getX(), (int) fish.getY(), null);
         }
 
-        for (Boat boat : this.boatList) {
+        for (Boat boat : this.BoatFactory.getBoatList()) {
             contexte.drawImage(boat.sprite, (int) boat.getX(), (int) boat.getY(), null);
         }
 
@@ -95,15 +96,16 @@ public class Jeu {
         // if (this.aWaste.getY() > 324 - aWaste.getHeight()) {
         //     this.aWaste.lancer(aBoat);
         // }
-        for (Item item : this.itemList) {
+        
+        for (Item item : this.ItemFactory.getItemList()) {
             item.miseAJour();
         }
 
-        for (Boat boat : this.boatList) {
+        for (Boat boat : this.BoatFactory.getBoatList()) {
             boat.miseAJour();
         }
 
-        for (Fish fish : this.fishList) {
+        for (Players fish : this.playersList) {
             fish.miseAJour();
         }
 
@@ -124,8 +126,8 @@ public class Jeu {
 
     // COLLISIONS
     public boolean fishCollideItem() {
-        for (Fish fish : fishList) {
-            for (Item item : itemList) {
+        for (Players fish : playersList) {
+            for (Item item : this.ItemFactory.getItemList()) {
                 if (!((item.getX() >= fish.getX() + fish.getWidth())    // Trop à droite
                     || (item.getX() + item.getWidth() <= fish.getX())    // Trop à gauche
                     || (item.getY() >= fish.getY() + fish.getHeight())   // Trop en bas
@@ -140,19 +142,20 @@ public class Jeu {
 
     // Getters pour accéder aux listes
     public ArrayList<Item> getItemList() {
-        return this.itemList;
+        return this.ItemFactory.getItemList();
     }
 
-    public ArrayList<Fish> getFishList() {
-        return this.fishList;
-    }
-
-    public ArrayList<Boat> getBoatList() {
-        return this.boatList;
+    public ArrayList<Players> getPlayersList() {
+        return this.playersList;
     }
 
     public BoatFactory getBoatFactory() {
-        return aBoatFactory;
+        return BoatFactory;
     }
+
+    public ItemFactory getItemFactory() {
+        return ItemFactory;
+    }
+    
     
 }

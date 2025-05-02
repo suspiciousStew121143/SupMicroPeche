@@ -40,6 +40,7 @@ public class Boat extends Entity{
             this.sprite = this.spriteDroite;
         }
         x=x+a*3;
+        y = 50 + (int)(Math.sin(x/20)*4);
     }
     
     @Override
