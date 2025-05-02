@@ -25,7 +25,6 @@ public class Boat extends Entity{
         } catch (IOException ex) {
             Logger.getLogger(Boat.class.getName()).log(Level.SEVERE, null, ex);
         }
-        lancer();
     }
     
    

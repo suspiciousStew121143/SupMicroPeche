@@ -20,42 +20,62 @@ public class Jeu {
 
     private BufferedImage decor;
     private int score;
-    private ArrayList<Entity> entityList;
-    private Waste aWaste;
-    private Fish aFish;
-    private Boat aBoat;
-    
-  
+    private ArrayList<Item> itemList;
+    private ArrayList<Fish> fishList;
+    private ArrayList<Boat> boatList;
+    private BoatFactory aBoatFactory;
 
     public Jeu() {
-        
-        this.aBoat = new Boat();
-        this.aWaste = new Waste(aBoat);
-        this.aFish = new Fish();
+        // ===========================
+        // -- INITIALISATION DU JEU --
+        // ===========================
+
+        // Initialisation du score
+        this.score = 0;
+
+        // Initialisation des listes
+        this.boatList = new ArrayList<>();
+        this.fishList = new ArrayList<>();
+        this.itemList = new ArrayList<>();
+
+        // Initialisation du décor
         try {
             this.decor = ImageIO.read(getClass().getResource("../assets/Background.png"));
         } catch (IOException ex) {
             Logger.getLogger(Jeu.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.score = 0;
+
+        // ========================
+        // -- CREATION D'ENTITES --
+        // ========================
+        // Uiliser l'usine à entités
+        
+        this.aBoatFactory = new BoatFactory(this);
+        aBoatFactory.createEntity();
+        
     }
+   
 
     public void rendu(Graphics2D contexte) {
-        // 1. Rendu du décor
-        contexte.drawImage(this.decor, 0, 0, null);
+        // 1. Decor
+        if (this.decor != null) {
+            contexte.drawImage(this.decor, 0, 0, null);
+        }
 
-        // // 2. Rendu des sprites
-        // int n = this.entityList.size();
-        // for (int i=0; i<n; i++ ) {
-        //     Entity e = this.entityList.get(i);
-        //     contexte.drawImage(e.sprite, (int) e.getX(), (int) e.getY(), null);
-        // }
-        // 2. Rendu du sprites
-        contexte.drawImage(this.aBoat.sprite, (int) this.aBoat.getX(), (int) this.aBoat.getY(), null);
-        contexte.drawImage(this.aWaste.sprite, (int) this.aWaste.getX(), (int) this.aWaste.getY(), null);
-        contexte.drawImage(this.aFish.sprite, (int) this.aFish.getX(), (int) this.aFish.getY(), null);
+        // 2. Sprites
+        for (Item item : this.itemList) {
+            contexte.drawImage(item.sprite, (int) item.getX(), (int) item.getY(), null);
+        }
 
-        // 3. Rendu du textes
+        for (Fish fish : this.fishList) {
+            contexte.drawImage(fish.sprite, (int) fish.getX(), (int) fish.getY(), null);
+        }
+
+        for (Boat boat : this.boatList) {
+            contexte.drawImage(boat.sprite, (int) boat.getX(), (int) boat.getY(), null);
+        }
+
+        // 3. Texte
         contexte.drawString("Score : " + score, 10, 20);
     }
 
@@ -69,21 +89,29 @@ public class Jeu {
         //     Entity e = this.entityList.get(i);
         //     e.miseAJour();
         // }
-        this.aBoat.miseAJour(aBoat);
-        this.aWaste.miseAJour();
-        // 3. Gérer les intéractions (collisions et autres règles)
-        if (this.aWaste.getY() > 324 - aWaste.getHeight()) {
-            this.aWaste.lancer(aBoat);
+        // this.aBoat.miseAJour(aBoat);
+        // this.aWaste.miseAJour();
+        // // 3. Gérer les intéractions (collisions et autres règles)
+        // if (this.aWaste.getY() > 324 - aWaste.getHeight()) {
+        //     this.aWaste.lancer(aBoat);
+        // }
+        for (Item item : this.itemList) {
+            item.miseAJour();
         }
+
+        for (Boat boat : this.boatList) {
+            boat.miseAJour();
+        }
+
+        for (Fish fish : this.fishList) {
+            fish.miseAJour();
+        }
+
+        // 3. Gérer les interactions (collisions et autres règles)
     }
 
-    public boolean estTermine() {        // Renvoie vrai si la partie est terminée (gagnée ou perdue)
-
-        return FishCollideWaste();
-    }
-
-    public Fish getFish() {
-        return aFish;
+    public boolean estTermine() {
+        return fishCollideItem();
     }
 
     public void incrementScore() {
@@ -94,33 +122,37 @@ public class Jeu {
         this.score = score;
     }
 
-    
     // COLLISIONS
-    public boolean FishCollideWaste() {
-        return !((aWaste.getX() >= aFish.getX() + aFish.getWidth()) // trop à droite
-                || (aWaste.getX() + aWaste.getHeight() <= aFish.getX()) // trop à gauche
-                || (aWaste.getY() >= aFish.getY() + aFish.getHeight()) // trop en bas
-                || (aWaste.getY() + aWaste.getWidth() <= aFish.getY())); // trop en haut
+    public boolean fishCollideItem() {
+        for (Fish fish : fishList) {
+            for (Item item : itemList) {
+                if (!((item.getX() >= fish.getX() + fish.getWidth())    // Trop à droite
+                    || (item.getX() + item.getWidth() <= fish.getX())    // Trop à gauche
+                    || (item.getY() >= fish.getY() + fish.getHeight())   // Trop en bas
+                    || (item.getY() + item.getHeight() <= fish.getY()))) // Trop en haut
+                {
+                    return true; // Collision détectée
+                }
+            }
+        }
+        return false; // Aucune collision détectée
     }
-    
-    public ArrayList<Entity> getList() {
-        return this.entityList;
-    }
-    
-    public void addEntity(Entity anEntity) {
-        this.entityList.add(anEntity);
-    }
-    
-//    public void collide(ActionEvent e) {
-//        int n = this.listeEntities.size();
-//        for (int i=0; i<n; i ++) {
-//            double bottomLeftCornerX = this.listeEntities.get(i).getX();
-//            double bottomRightCornerX = this.listeEntities.get(i).getX();
-//            double topLeftCornerX = this.listeEntities.get(i).getX();
-//            double topRightCornerX = this.listeEntities.get(i).getX();
-//        }
-//    }
 
-    
+    // Getters pour accéder aux listes
+    public ArrayList<Item> getItemList() {
+        return this.itemList;
+    }
 
+    public ArrayList<Fish> getFishList() {
+        return this.fishList;
+    }
+
+    public ArrayList<Boat> getBoatList() {
+        return this.boatList;
+    }
+
+    public BoatFactory getBoatFactory() {
+        return aBoatFactory;
+    }
+    
 }
