@@ -73,16 +73,16 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
     @Override
     public void keyPressed(KeyEvent evt) {
         if (evt.getKeyCode() == evt.VK_D) {
-            this.jeu.getFishList().get(0).setToucheDroite(true);
+            this.jeu.getPlayersList().get(0).setToucheDroite(true);
         }
         if (evt.getKeyCode() == evt.VK_Q) {
-            this.jeu.getFishList().get(0).setToucheGauche(true);
+            this.jeu.getPlayersList().get(0).setToucheGauche(true);
         }
         if (evt.getKeyCode() == evt.VK_Z) {
-            this.jeu.getFishList().get(0).setToucheHaut(true);
+            this.jeu.getPlayersList().get(0).setToucheHaut(true);
         }
         if (evt.getKeyCode() == evt.VK_S) {
-            this.jeu.getFishList().get(0).setToucheBas(true);
+            this.jeu.getPlayersList().get(0).setToucheBas(true);
         }
         if (evt.getKeyCode() == evt.VK_B) {
             this.jeu.getBoatFactory().createEntity();
@@ -93,16 +93,16 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
     @Override
     public void keyReleased(KeyEvent evt) {
         if (evt.getKeyCode() == evt.VK_D) {
-            this.jeu.getFishList().get(0).setToucheDroite(false);
+            this.jeu.getPlayersList().get(0).setToucheDroite(false);
         }
         if (evt.getKeyCode() == evt.VK_Q) {
-            this.jeu.getFishList().get(0).setToucheGauche(false);
+            this.jeu.getPlayersList().get(0).setToucheGauche(false);
         }
         if (evt.getKeyCode() == evt.VK_Z) {
-            this.jeu.getFishList().get(0).setToucheHaut(false);
+            this.jeu.getPlayersList().get(0).setToucheHaut(false);
         }
         if (evt.getKeyCode() == evt.VK_S) {
-            this.jeu.getFishList().get(0).setToucheBas(false);
+            this.jeu.getPlayersList().get(0).setToucheBas(false);
         }
     }
     

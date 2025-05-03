@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
  *
  * @author pcastani
  */
-public class GlobeFish extends Fish{
+public class GlobeFish extends Players{
     
     
     public GlobeFish(){

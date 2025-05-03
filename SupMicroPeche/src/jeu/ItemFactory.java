@@ -4,24 +4,33 @@
  */
 package jeu;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author lkerguil
  */
-public class FishFactory {
+public class ItemFactory {
 
     private Jeu jeu;
-
-    public FishFactory(Jeu jeu) {
+    private ArrayList<Item> itemList;
+    
+    public ItemFactory(Jeu jeu) {
         this.jeu = jeu;
+        this.itemList = new ArrayList<>();
     }
 
     // @override
     public void createEntity() {
-        Fish f = new Fish();
+        Players f = new Players();
         f.lancer();
-        this.jeu.getFishList().add(f);
+        this.jeu.getPlayersList().add(f);
 
     }
 
+    public ArrayList<Item> getItemList() {
+        return itemList;
+    }
+
+    
 }

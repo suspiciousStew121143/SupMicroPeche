@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 /**
  *
  * @author lkerguil
@@ -15,12 +17,13 @@ import java.sql.SQLException;
 public class BoatFactory {
 
     private Jeu jeu;
-
+    private ArrayList<Boat> boatList;
+    
     public BoatFactory(Jeu jeu) {
         this.jeu = jeu;
+        this.boatList = new ArrayList<>();
     }
 
-    // @override
     public Boat createEntity() {
         String id = ReadListAndCreateId();
         Boat b = new Boat(id);
@@ -53,5 +56,14 @@ public class BoatFactory {
         }
     }  
     
+        Boat b = new Boat();
+        this.boatList.add(b);
+        return b;
+    }
+
+    public ArrayList<Boat> getBoatList() {
+        return boatList;
+    }
+
     
 }
