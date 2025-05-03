@@ -25,7 +25,7 @@ public class Waste extends Entity {
         } catch (IOException ex) {
             Logger.getLogger(Waste.class.getName()).log(Level.SEVERE, null, ex);
         }
-        lancer(b);
+//        lancer(b);
     }
 
     
@@ -35,10 +35,10 @@ public class Waste extends Entity {
     }
 
 
-    public void lancer(Boat b) {
-        this.x = b.getX();
-        this.y = b.getY()+b.getHeight();
-    }
+//    public void lancer(Boat b) {
+//        this.x = b.getX();
+//        this.y = b.getY()+b.getHeight();
+//    }
 
 }
 

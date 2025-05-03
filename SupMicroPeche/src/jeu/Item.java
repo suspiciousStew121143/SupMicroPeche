@@ -33,10 +33,10 @@ public class Item extends Entity {
     }      
 
 
-    public void lancer(Boat b) {
-        this.x = b.getX();
-        this.y = b.getY()+b.getHeight();
-    }
+//    public void lancer(Boat b) {
+//        this.x = b.getX();
+//        this.y = b.getY()+b.getHeight();
+//    }
 
 }
 

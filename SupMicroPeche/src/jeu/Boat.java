@@ -17,7 +17,7 @@ public class Boat extends Entity{
     
     private int a=1;
     
-    public Boat(){
+    public Boat(String id){
         try {
             this.spriteDroite = ImageIO.read(getClass().getResource("../assets/Boat_Right.png"));
             this.spriteGauche = ImageIO.read(getClass().getResource("../assets/Boat_Left.png"));
@@ -25,8 +25,10 @@ public class Boat extends Entity{
         } catch (IOException ex) {
             Logger.getLogger(Boat.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.Id = id;
+        this.sens = true;
         lancer();
-    }
+    }   
     
    
     @Override
@@ -39,7 +41,7 @@ public class Boat extends Entity{
             a=1; 
             this.sprite = this.spriteDroite;
         }
-        x=x+a*3;
+        x=x+a*3;       
     }
     
     @Override

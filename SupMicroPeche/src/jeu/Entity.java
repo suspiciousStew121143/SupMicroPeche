@@ -11,14 +11,15 @@ import java.awt.image.BufferedImage;
  *
  * @author atanguy
  */
-public class Entity {
+public class Entity{
     protected BufferedImage sprite;
     protected BufferedImage spriteDroite;
     protected BufferedImage spriteGauche;
-    protected double x, y;
+    protected int x, y;
     protected float time; // Temps depuis la création d'une entité, pour utiliser certaines Abilitys.
-
+    protected String Id;
     protected int healthBar;
+    protected Boolean sens;
 
     
     public void miseAJour() {
@@ -31,11 +32,11 @@ public class Entity {
         contexte.drawImage(this.sprite, (int) x, (int) y, null);
     }
     
-    public double getX() {
+    public int getX() {
         return x;
     }
 
-    public double getY() {
+    public int getY() {
         return y;
     }
     
@@ -63,4 +64,15 @@ public class Entity {
         return sprite.getWidth();
     }
     
+    public String getId(){
+        return Id;
+    }
+    
+    public Boolean getSens(){
+        return sens;
+    }
+    
+    public void setId(String id){
+        this.Id = id;
+    }
 }

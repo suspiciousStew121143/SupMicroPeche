@@ -20,10 +20,12 @@ public class Jeu {
 
     private BufferedImage decor;
     private int score;
-    private ArrayList<Item> itemList;
-    private ArrayList<Fish> fishList;
-    private ArrayList<Boat> boatList;
+    public ArrayList<Item> itemList;
+    public ArrayList<Fish> fishList;
+    public ArrayList<Boat> boatList;
     private BoatFactory aBoatFactory;
+    
+    // private GestionBD aBD;
 
     public Jeu() {
         // ===========================
@@ -52,6 +54,8 @@ public class Jeu {
         
         this.aBoatFactory = new BoatFactory(this);
         aBoatFactory.createEntity();
+       
+        // this.aBD = new GestionBD();
         
     }
    
@@ -154,5 +158,5 @@ public class Jeu {
     public BoatFactory getBoatFactory() {
         return aBoatFactory;
     }
-    
+ 
 }
