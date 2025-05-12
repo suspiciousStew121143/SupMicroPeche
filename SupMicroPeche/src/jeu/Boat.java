@@ -16,8 +16,9 @@ import javax.imageio.ImageIO;
 public class Boat extends Entity{
     
     private int a=1;
+    private GestionDBBoat db;
     
-    public Boat(String id){
+    public Boat(String id, GestionDBBoat db){
         try {
             this.spriteDroite = ImageIO.read(getClass().getResource("../assets/Boat_Right.png"));
             this.spriteGauche = ImageIO.read(getClass().getResource("../assets/Boat_Left.png"));
@@ -27,6 +28,7 @@ public class Boat extends Entity{
         }
         this.Id = id;
         this.sens = true;
+        this.db = db;
         lancer();
     }   
     
@@ -41,7 +43,8 @@ public class Boat extends Entity{
             a=1; 
             this.sprite = this.spriteDroite;
         }
-        x=x+a*3;       
+        x=x+a*3;
+        db.UpdateBase(this);
     }
     
     @Override

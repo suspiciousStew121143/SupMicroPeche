@@ -15,15 +15,17 @@ import java.sql.SQLException;
 public class BoatFactory {
 
     private Jeu jeu;
+    private GestionDBBoat db;
 
     public BoatFactory(Jeu jeu) {
         this.jeu = jeu;
+        this.db = new GestionDBBoat();
     }
 
     // @override
     public Boat createEntity() {
         String id = ReadListAndCreateId();
-        Boat b = new Boat(id);
+        Boat b = new Boat(id, db);
         this.jeu.getBoatList().add(b);
         PushBoatInBDWhenCreated(b);
         return b;
