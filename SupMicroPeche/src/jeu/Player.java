@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
  *
  * @author guillaume.laurent
  */
-public class Players extends Entity {
+public class Player extends Entity {
 
     protected boolean toucheGauche, toucheDroite, toucheBas, toucheHaut;
     private String name;
@@ -23,13 +23,13 @@ public class Players extends Entity {
     private int healthBar;
     private float knockBack;
     
-    public Players() {
+    public Player() {
         try {
-            this.spriteDroite = ImageIO.read(getClass().getResource("../assets/ClownfishRight.png"));
-            this.spriteGauche = ImageIO.read(getClass().getResource("../assets/ClownfishLeft.png"));
+            this.spriteDroite = ImageIO.read(getClass().getResource("../resources/ClownfishRight.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("../resources/ClownfishLeft.png"));
             this.sprite = spriteDroite; // par défaut, le poisson regarde à droite
         } catch (IOException ex) {
-            Logger.getLogger(Players.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.x = 170;
         this.y = 314;

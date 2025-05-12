@@ -20,15 +20,13 @@ public class Jeu {
 
     private BufferedImage decor;
     private int score;
-    public ArrayList<Item> itemList;
-    public ArrayList<Fish> fishList;
-    public ArrayList<Boat> boatList;
+    public ArrayList<Player> playerList;
+    public ItemFactory anItemFactory;
+    private BoatFactory aBoatFactory;
+    
+    private boolean hasJoinedGame;
     
     // private GestionBD aBD;
-    
-    private ArrayList<Players> playersList;
-    private BoatFactory BoatFactory;
-    private ItemFactory ItemFactory;
 
     public Jeu() {
         // ===========================
@@ -39,12 +37,14 @@ public class Jeu {
         this.score = 0;
 
         // Initialisation des listes
-        this.playersList = new ArrayList<>();
+        this.playerList = new ArrayList<>();
 
-
+        // Initialisation du booléan pour éviter de rejoindre plusieurs fois la partie
+        this.hasJoinedGame = false;
+        
         // Initialisation du décor
         try {
-            this.decor = ImageIO.read(getClass().getResource("../assets/Background.png"));
+            this.decor = ImageIO.read(getClass().getResource("../resources/Background.png"));
         } catch (IOException ex) {
             Logger.getLogger(Jeu.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -54,10 +54,12 @@ public class Jeu {
         // ========================
         // Uiliser l'usine à entités
         
-        this.BoatFactory = new BoatFactory(this);
-        BoatFactory.createEntity();
-        
-        this.ItemFactory = new ItemFactory(this);
+        this.aBoatFactory = new BoatFactory(this);
+//        aBoatFactory.createEntity();
+
+        this.anItemFactory = new ItemFactory(this);
+       
+        // this.aBD = new GestionBD();
         
     }
    
@@ -69,16 +71,16 @@ public class Jeu {
         }
 
         // 2. Sprites
-        for (Item item : this.ItemFactory.getItemList()) {
-            contexte.drawImage(item.sprite, (int) item.getX(), (int) item.getY(), null);
+        for (Item item : this.anItemFactory.getItemList()) {
+            item.rendu(contexte);
         }
 
-        for (Players fish : this.playersList) {
-            contexte.drawImage(fish.sprite, (int) fish.getX(), (int) fish.getY(), null);
+        for (Player player : this.playerList) {
+            player.rendu(contexte);
         }
 
-        for (Boat boat : this.BoatFactory.getBoatList()) {
-            contexte.drawImage(boat.sprite, (int) boat.getX(), (int) boat.getY(), null);
+        for (Boat boat : this.aBoatFactory.getBoatList()) {
+            boat.rendu(contexte);
         }
 
         // 3. Texte
@@ -90,31 +92,28 @@ public class Jeu {
 
         // 2. MAJ des autres éléments (objets, monstres, etc.)
         
-        // int n = this.entityList.size();
-        // for (int i=0; i<n; i++ ) {
-        //     Entity e = this.entityList.get(i);
-        //     e.miseAJour();
-        // }
-        // this.aBoat.miseAJour(aBoat);
-        // this.aWaste.miseAJour();
-        // // 3. Gérer les intéractions (collisions et autres règles)
-        // if (this.aWaste.getY() > 324 - aWaste.getHeight()) {
-        //     this.aWaste.lancer(aBoat);
-        // }
-        
-        for (Item item : this.ItemFactory.getItemList()) {
+        for (Item item : this.anItemFactory.getItemList()) {
             item.miseAJour();
         }
 
-        for (Boat boat : this.BoatFactory.getBoatList()) {
+        for (Boat boat : this.aBoatFactory.getBoatList()) {
             boat.miseAJour();
         }
 
-        for (Players fish : this.playersList) {
-            fish.miseAJour();
+        for (Player player : this.playerList) {
+            player.miseAJour();
         }
 
         // 3. Gérer les interactions (collisions et autres règles)
+        
+        // Lâcher de déchêts
+        
+        for (Boat boat : this.aBoatFactory.getBoatList()) {
+            if(boat.getTimer() > 100){
+                this.anItemFactory.createEntity((int) boat.getX(),(int) boat.getY(), (int) boat.getHeight());
+                boat.setTimer(0);
+            }
+        }
     }
 
     public boolean estTermine() {
@@ -131,8 +130,8 @@ public class Jeu {
 
     // COLLISIONS
     public boolean fishCollideItem() {
-        for (Players fish : playersList) {
-            for (Item item : this.ItemFactory.getItemList()) {
+        for (Player fish : playerList) {
+            for (Item item : anItemFactory.getItemList()) {
                 if (!((item.getX() >= fish.getX() + fish.getWidth())    // Trop à droite
                     || (item.getX() + item.getWidth() <= fish.getX())    // Trop à gauche
                     || (item.getY() >= fish.getY() + fish.getHeight())   // Trop en bas
@@ -146,20 +145,25 @@ public class Jeu {
     }
 
     // Getters pour accéder aux listes
-    public ArrayList<Item> getItemList() {
-        return this.ItemFactory.getItemList();
-    }
 
-    public ArrayList<Players> getPlayersList() {
-        return this.playersList;
+    public ArrayList<Player> getPlayerList() {
+        return this.playerList;
     }
 
     public BoatFactory getBoatFactory() {
-        return BoatFactory;
+        return aBoatFactory;
     }
 
     public ItemFactory getItemFactory() {
-        return ItemFactory;
+        return anItemFactory;
+    }
+
+    public boolean getHasJoinedGame() {
+        return hasJoinedGame;
+    }
+
+    public void setHasJoinedGame(boolean hasJoinedGame) {
+        this.hasJoinedGame = hasJoinedGame;
     }
     
     

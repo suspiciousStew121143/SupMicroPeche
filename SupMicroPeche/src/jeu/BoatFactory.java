@@ -9,7 +9,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 /**
  *
  * @author lkerguil
@@ -21,19 +20,18 @@ public class BoatFactory {
     
     public BoatFactory(Jeu jeu) {
         this.jeu = jeu;
-        this.boatList = new ArrayList<>();
+        this.boatList = new ArrayList<Boat>();
     }
 
-    public Boat createEntity() {
+    public void createEntity() {
         String id = ReadListAndCreateId();
         Boat b = new Boat(id);
-        this.jeu.getBoatList().add(b);
+        this.boatList.add(b);
         PushBoatInBDWhenCreated(b);
-        return b;
     }
     
     public String ReadListAndCreateId(){
-        int nb_boat = this.jeu.getBoatList().size()+1;
+        int nb_boat = this.boatList.size()+1;
         System.out.println(nb_boat);
         String id = "B" + nb_boat;
         return id;
@@ -55,15 +53,15 @@ public class BoatFactory {
             ex.printStackTrace();
         }
     }  
-    
-        Boat b = new Boat();
-        this.boatList.add(b);
-        return b;
-    }
 
     public ArrayList<Boat> getBoatList() {
         return boatList;
     }
 
+    public void setBoatList(ArrayList<Boat> boatList) {
+        this.boatList = boatList;
+    }
+    
+    
     
 }

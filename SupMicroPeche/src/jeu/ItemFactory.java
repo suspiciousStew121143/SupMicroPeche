@@ -12,25 +12,27 @@ import java.util.ArrayList;
  */
 public class ItemFactory {
 
+    
     private Jeu jeu;
-    private ArrayList<Item> itemList;
+    public ArrayList<Item> itemList;
     
     public ItemFactory(Jeu jeu) {
         this.jeu = jeu;
-        this.itemList = new ArrayList<>();
+        this.itemList = new ArrayList<Item>();
     }
 
     // @override
-    public void createEntity() {
-        Players f = new Players();
-        f.lancer();
-        this.jeu.getPlayersList().add(f);
-
+    public void createEntity(int x_boat, int y_boat, int Height_boat) {
+        Waste w = new Waste(x_boat, y_boat,Height_boat);
+        this.itemList.add(w);
     }
 
     public ArrayList<Item> getItemList() {
         return itemList;
     }
 
-    
+    public void setItemList(ArrayList<Item> itemList) {
+        this.itemList = itemList;
+    }
+
 }

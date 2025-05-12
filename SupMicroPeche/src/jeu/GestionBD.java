@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -56,7 +57,7 @@ public class GestionBD extends Jeu{
     
     
     
-    public void PushBase() {
+    public void PushBase(ArrayList<Boat> boatList) {
             // Normalement la méthode push les infos de toutes les entités dans la BD
             // Là elle ne marche que pour les bateaux
             // Il faut réussir à mettre un Timer et à l'utiliser régulièrement pour voir si elle fonctionne bien

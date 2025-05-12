@@ -5,10 +5,6 @@
  */
 package jeu;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 
 /**
  * Exemple de classe lutin
@@ -19,11 +15,7 @@ public class Item extends Entity {
     
 
     public Item() {
-        try {
-            this.sprite = ImageIO.read(getClass().getResource("../assets/washer.png"));
-        } catch (IOException ex) {
-            Logger.getLogger(Waste.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
 
     

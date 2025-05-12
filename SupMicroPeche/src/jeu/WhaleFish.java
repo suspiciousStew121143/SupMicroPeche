@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
  *
  * @author pcastani
  */
-public class WhaleFish extends Players{
+public class WhaleFish extends Player{
     
     public WhaleFish(){
         this.x = 100;

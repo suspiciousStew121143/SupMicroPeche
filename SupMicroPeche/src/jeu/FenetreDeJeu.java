@@ -73,19 +73,25 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
     @Override
     public void keyPressed(KeyEvent evt) {
         if (evt.getKeyCode() == evt.VK_D) {
-            this.jeu.getPlayersList().get(0).setToucheDroite(true);
+            this.jeu.getPlayerList().get(0).setToucheDroite(true);
         }
         if (evt.getKeyCode() == evt.VK_Q) {
-            this.jeu.getPlayersList().get(0).setToucheGauche(true);
+            this.jeu.getPlayerList().get(0).setToucheGauche(true);
         }
         if (evt.getKeyCode() == evt.VK_Z) {
-            this.jeu.getPlayersList().get(0).setToucheHaut(true);
+            this.jeu.getPlayerList().get(0).setToucheHaut(true);
         }
         if (evt.getKeyCode() == evt.VK_S) {
-            this.jeu.getPlayersList().get(0).setToucheBas(true);
+            this.jeu.getPlayerList().get(0).setToucheBas(true);
         }
         if (evt.getKeyCode() == evt.VK_B) {
             this.jeu.getBoatFactory().createEntity();
+        }
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            if (!this.jeu.getHasJoinedGame()){
+                this.jeu.getPlayerList().add(new Player());
+                this.jeu.setHasJoinedGame(true);
+            }
         }
         
     }
@@ -93,16 +99,16 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
     @Override
     public void keyReleased(KeyEvent evt) {
         if (evt.getKeyCode() == evt.VK_D) {
-            this.jeu.getPlayersList().get(0).setToucheDroite(false);
+            this.jeu.getPlayerList().get(0).setToucheDroite(false);
         }
         if (evt.getKeyCode() == evt.VK_Q) {
-            this.jeu.getPlayersList().get(0).setToucheGauche(false);
+            this.jeu.getPlayerList().get(0).setToucheGauche(false);
         }
         if (evt.getKeyCode() == evt.VK_Z) {
-            this.jeu.getPlayersList().get(0).setToucheHaut(false);
+            this.jeu.getPlayerList().get(0).setToucheHaut(false);
         }
         if (evt.getKeyCode() == evt.VK_S) {
-            this.jeu.getPlayersList().get(0).setToucheBas(false);
+            this.jeu.getPlayerList().get(0).setToucheBas(false);
         }
     }
     

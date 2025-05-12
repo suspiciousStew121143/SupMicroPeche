@@ -15,6 +15,7 @@ public class Entity{
     protected BufferedImage sprite;
     protected BufferedImage spriteDroite;
     protected BufferedImage spriteGauche;
+    protected boolean isGoingRight;
     protected int x, y;
     protected float time; // Temps depuis la création d'une entité, pour utiliser certaines Abilitys.
     protected String Id;

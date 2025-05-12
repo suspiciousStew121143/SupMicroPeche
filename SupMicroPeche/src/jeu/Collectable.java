@@ -15,21 +15,23 @@ import javax.imageio.ImageIO;
  *
  * @author Louis
  */
-public class Waste extends Item {
+public class Collectable extends Item {
 
-    public Waste() {
+    private boolean isPickedUp;
+    
+    public Collectable() {
         try {
             this.sprite = ImageIO.read(getClass().getResource("../resources/washer.png"));
         } catch (IOException ex) {
-            Logger.getLogger(Waste.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Collectable.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public Waste(int x_boat, int y_boat, int Height_boat) {
+    public Collectable(int x_boat, int y_boat, int Height_boat) {
         try {
             this.sprite = ImageIO.read(getClass().getResource("../resources/washer.png"));
         } catch (IOException ex) {
-            Logger.getLogger(Waste.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Collectable.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.x = x_boat;
         this.y = y_boat+Height_boat;

@@ -4,6 +4,7 @@
  */
 package jeu;
 
+import java.awt.Graphics2D;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,12 +17,14 @@ import javax.imageio.ImageIO;
 public class Boat extends Entity{
     
     private int a=1;
+    private int Timer=0;
     
     public Boat(String id){
         try {
-            this.spriteDroite = ImageIO.read(getClass().getResource("../assets/Boat_Right.png"));
-            this.spriteGauche = ImageIO.read(getClass().getResource("../assets/Boat_Left.png"));
+            this.spriteDroite = ImageIO.read(getClass().getResource("../resources/Boat_Right.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("../resources/Boat_Left.png"));
             this.sprite = spriteDroite; // par défaut, le bâteau est orienté vers la droite
+            this.isGoingRight = true;
         } catch (IOException ex) {
             Logger.getLogger(Boat.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -35,14 +38,15 @@ public class Boat extends Entity{
     public void miseAJour() {
         if(x>=(576-this.getWidth())){
             a=-1;
-            this.sprite = this.spriteGauche;
+            this.isGoingRight = false;
         }    
         else if(x<=0){
             a=1; 
-            this.sprite = this.spriteDroite;
+            this.isGoingRight = true;
         }
         x=x+a*3;
         y = 50 + (int)(Math.sin(x/20)*4);
+        this.Timer += 1;
     }
     
     @Override
@@ -50,4 +54,22 @@ public class Boat extends Entity{
         this.x = 1;
         this.y = 50;
     }  
+
+    public int getTimer() {
+        return Timer;
+    }
+
+    public void setTimer(int Timer) {
+        this.Timer = Timer;
+    }
+    
+    @Override
+    public void rendu(Graphics2D contexte) {
+        if(this.isGoingRight){
+            this.sprite = this.spriteDroite;
+        } else {
+            this.sprite = this.spriteGauche;
+        }
+        contexte.drawImage(this.sprite, (int) x, (int) y, null);
+    }
 }
