@@ -84,12 +84,25 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
         if (evt.getKeyCode() == evt.VK_S) {
             this.jeu.getFishList().get(0).setToucheBas(true);
         }
+        // Creer des bateaux
         if (evt.getKeyCode() == evt.VK_B) {
             this.jeu.getBoatFactory().createEntity();
         }
-        
+        // Creer des poissons
+        if (evt.getKeyCode() == evt.VK_F) {
+            this.jeu.getFishFactory().createEntity("clown");
+        }
+        if (evt.getKeyCode() == evt.VK_G) {
+            this.jeu.getFishFactory().createEntity("globe");
+        }
+        if (evt.getKeyCode() == evt.VK_H) {
+            this.jeu.getFishFactory().createEntity("sword");
+        }
+        if (evt.getKeyCode() == evt.VK_J) {
+            this.jeu.getFishFactory().createEntity("whale");
+        }
     }
-
+    
     @Override
     public void keyReleased(KeyEvent evt) {
         if (evt.getKeyCode() == evt.VK_D) {

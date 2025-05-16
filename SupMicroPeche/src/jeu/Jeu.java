@@ -24,14 +24,14 @@ public class Jeu {
     public ArrayList<Fish> fishList;
     public ArrayList<Boat> boatList;
     private BoatFactory aBoatFactory;
+    private FishFactory aFishFactory;
     
     // private GestionBD aBD;
 
     public Jeu() {
-        // ===========================
+        // =====================================================================
         // -- INITIALISATION DU JEU --
-        // ===========================
-
+        // =====================================================================
         // Initialisation du score
         this.score = 0;
 
@@ -47,16 +47,11 @@ public class Jeu {
             Logger.getLogger(Jeu.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        // ========================
-        // -- CREATION D'ENTITES --
-        // ========================
-        // Uiliser l'usine à entités
-        
+        // Initialisation des usines à entités
         this.aBoatFactory = new BoatFactory(this);
         aBoatFactory.createEntity();
-       
-        // this.aBD = new GestionBD();
         
+        this.aFishFactory = new FishFactory(this);
     }
    
 
@@ -157,6 +152,10 @@ public class Jeu {
 
     public BoatFactory getBoatFactory() {
         return aBoatFactory;
+    }
+
+    public FishFactory getFishFactory() {
+        return aFishFactory;
     }
  
 }

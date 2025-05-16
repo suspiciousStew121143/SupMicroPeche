@@ -1,31 +1,25 @@
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package jeu;
-//package jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  *
- * @author pcastani
+ * @author lkerguil
  */
-public class GestionDBBoat {
-
+public class GestionDBFish {
     private String adresseBase;
     private String user;
     private String motdepasse;
     private Connection connexion;
 
-    public GestionDBBoat() {
+    public GestionDBFish() {
         System.out.println("GestionDBBoat est appelée");
         this.adresseBase = "jdbc:mariadb://nemrod.ens2m.fr:3306/2024-2025_s2_vs1_tp2_supmicropêche";
         this.user = "etudiant";
@@ -42,15 +36,14 @@ public class GestionDBBoat {
 
     }
 
-    public void UpdateBase(Boat b) {
+    public void UpdateBase(Fish f) {
         try {
-            PreparedStatement requete = this.connexion.prepareStatement("UPDATE Boat SET x = ?, y = ?, sens = ? WHERE id = ?");
+            PreparedStatement requete = this.connexion.prepareStatement("UPDATE joueur SET x = ?, y = ?, sens = ? WHERE id = ?");
 
-            requete.setInt(1, b.getX());
-            //System.out.println(b.getX());
-            requete.setInt(2, b.getY());
-            requete.setBoolean(3, b.getSens());
-            requete.setString(4, b.getId());
+            requete.setInt(1, f.getX());
+            requete.setInt(2, f.getY());
+            requete.setBoolean(3, f.getSens());
+            requete.setString(4, f.getId());
 
             requete.executeUpdate();
             requete.close();
@@ -61,13 +54,15 @@ public class GestionDBBoat {
 
     }
     
-    public void InsertInBase(Boat b) {
+    public void InsertInBase(Fish f) {
         try {
-            PreparedStatement requete = connexion.prepareStatement("INSERT INTO Boat VALUES (?, ?, ?, ?)");
-            requete.setString(1, b.getId());
-            requete.setInt(2, b.getX());
-            requete.setInt(3, b.getY());
-            requete.setBoolean(4, b.getSens());
+            PreparedStatement requete = connexion.prepareStatement("INSERT INTO joueur (id, x, y, sens, health) VALUES (?, ?, ?, ?, ?)");
+            requete.setString(1, f.getId());
+            requete.setInt(2, f.getX());
+            System.out.println(f.getX());
+            requete.setInt(3, f.getY());
+            requete.setBoolean(4, f.getSens());
+            requete.setInt(5, f.getHealthBar());
             requete.executeUpdate();
 
             requete.close();
@@ -76,5 +71,5 @@ public class GestionDBBoat {
         }
 
     }
+    
 }
-   

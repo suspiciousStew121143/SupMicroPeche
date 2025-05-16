@@ -14,8 +14,11 @@ import javax.imageio.ImageIO;
  * @author pcastani
  */
 public class ClownFish extends Fish{
+
     
-    public ClownFish(){
+    public ClownFish(String id, GestionDBFish db){
+        super(id, db); // Appelle le constructeur mère Player
+        
         this.x = 100;
         this.y = 250;
         this.toucheGauche = false;
@@ -23,7 +26,9 @@ public class ClownFish extends Fish{
         this.toucheBas = false;
         this.toucheHaut = false;
         try {
-            this.sprite = ImageIO.read(getClass().getResource("../assets/washer.png"));
+            this.spriteDroite = ImageIO.read(getClass().getResource("../assets/ClownfishRight.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("../assets/ClownfishLeft.png"));
+            this.sprite = spriteDroite; // par défaut, le poisson regarde à droite
         } catch (IOException ex) {
             Logger.getLogger(ClownFish.class.getName()).log(Level.SEVERE, null, ex);
         }

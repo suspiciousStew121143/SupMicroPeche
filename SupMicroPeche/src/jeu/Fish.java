@@ -19,11 +19,10 @@ public class Fish extends Entity {
 
     protected boolean toucheGauche, toucheDroite, toucheBas, toucheHaut;
     private String name;
-    private float speed;
-    private int healthBar;
     private float knockBack;
+    private GestionDBFish db;
     
-    public Fish() {
+    public Fish(String id, GestionDBFish db) {
         try {
             this.spriteDroite = ImageIO.read(getClass().getResource("../assets/ClownfishRight.png"));
             this.spriteGauche = ImageIO.read(getClass().getResource("../assets/ClownfishLeft.png"));
@@ -37,6 +36,12 @@ public class Fish extends Entity {
         this.toucheDroite = false;
         this.toucheBas = false;
         this.toucheHaut = false;
+        this.sens = true;
+        this.healthBar = 3;
+        this.db = db;
+        this.id = id;
+        System.out.println("Player créé avec id = " + this.id);
+   
     }
 
     @Override
@@ -67,15 +72,12 @@ public class Fish extends Entity {
         if (y < 50+ sprite.getHeight()) { // collision avec le bord haut de la scene
             y = 50+ sprite.getHeight();
         }
+        db.UpdateBase(this);
     }
-
     
     public void useAbility(){
 
     }
-    
-    
-    
     
     public void setToucheGauche(boolean etat) {
         this.toucheGauche = etat;
@@ -96,6 +98,10 @@ public class Fish extends Entity {
     }
     public void setToucheHaut(boolean etat) {
         this.toucheHaut = etat;
+    }
+
+    public int getHealthBar() {
+        return healthBar;
     }
     
 }

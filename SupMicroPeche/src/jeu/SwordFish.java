@@ -14,7 +14,9 @@ import javax.imageio.ImageIO;
  */
 public class SwordFish extends Fish {
     
-    public SwordFish(){
+    public SwordFish(String id, GestionDBFish db){
+        super(id, db);
+        
         this.x = 100;
         this.y = 250;
         this.toucheGauche = false;
@@ -22,7 +24,9 @@ public class SwordFish extends Fish {
         this.toucheBas = false;
         this.toucheHaut = false;
         try {
-            this.sprite = ImageIO.read(getClass().getResource("../assets/washer.png"));
+            this.spriteDroite = ImageIO.read(getClass().getResource("../assets/SwordFishRight.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("../assets/SwordFishLeft.png"));
+            this.sprite = spriteDroite; // par défaut, le poisson regarde à droite
         } catch (IOException ex) {
             Logger.getLogger(SwordFish.class.getName()).log(Level.SEVERE, null, ex);
         }

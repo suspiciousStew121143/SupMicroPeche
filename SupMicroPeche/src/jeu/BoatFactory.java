@@ -32,6 +32,10 @@ public class BoatFactory {
     }
     
     public String ReadListAndCreateId(){
+        // Vérifie combien de Boat sont dans la boatList et crée un ID en conséquence.
+        //          ------------ EXEMPLE ------------------
+        // SI       1 Boat est dans la liste avec l'id = B1
+        // ALORS    le prochain Boat créé aura    l'id = B2
         int nb_boat = this.jeu.getBoatList().size()+1;
         System.out.println(nb_boat);
         String id = "B" + nb_boat;

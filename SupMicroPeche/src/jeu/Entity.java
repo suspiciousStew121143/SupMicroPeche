@@ -17,9 +17,10 @@ public class Entity{
     protected BufferedImage spriteGauche;
     protected int x, y;
     protected float time; // Temps depuis la création d'une entité, pour utiliser certaines Abilitys.
-    protected String Id;
+    protected String id;
     protected int healthBar;
     protected Boolean sens;
+    protected float speed;
 
     
     public void miseAJour() {
@@ -65,7 +66,7 @@ public class Entity{
     }
     
     public String getId(){
-        return Id;
+        return id;
     }
     
     public Boolean getSens(){
@@ -73,6 +74,16 @@ public class Entity{
     }
     
     public void setId(String id){
-        this.Id = id;
+        this.id = id;
     }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+    
+    
 }

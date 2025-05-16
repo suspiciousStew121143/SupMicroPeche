@@ -16,7 +16,9 @@ import javax.imageio.ImageIO;
 public class GlobeFish extends Fish{
     
     
-    public GlobeFish(){
+    public GlobeFish(String id, GestionDBFish db){
+        super(id, db);
+        
         this.x = 100;
         this.y = 250;
         this.toucheGauche = false;
@@ -24,7 +26,9 @@ public class GlobeFish extends Fish{
         this.toucheBas = false;
         this.toucheHaut = false;
         try {
-            this.sprite = ImageIO.read(getClass().getResource("../assets/washer.png"));
+            this.spriteDroite = ImageIO.read(getClass().getResource("../assets/GlobeFishRight.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("../assets/GlobeFishLeft.png"));
+            this.sprite = spriteDroite; // par défaut, le poisson regarde à droite
         } catch (IOException ex) {
             Logger.getLogger(GlobeFish.class.getName()).log(Level.SEVERE, null, ex);
         }

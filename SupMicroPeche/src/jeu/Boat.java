@@ -26,7 +26,7 @@ public class Boat extends Entity{
         } catch (IOException ex) {
             Logger.getLogger(Boat.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.Id = id;
+        this.id = id;
         this.sens = true;
         this.db = db;
         lancer();
