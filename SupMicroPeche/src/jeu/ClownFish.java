@@ -16,8 +16,8 @@ import javax.imageio.ImageIO;
 public class ClownFish extends Fish{
 
     
-    public ClownFish(String id, GestionDBFish db){
-        super(id, db); // Appelle le constructeur mère Player
+    public ClownFish(GestionDBFish db){
+        super(db); // Appelle le constructeur mère Player
         
         this.x = 100;
         this.y = 250;
@@ -25,6 +25,9 @@ public class ClownFish extends Fish{
         this.toucheDroite = false;
         this.toucheBas = false;
         this.toucheHaut = false;
+        this.speed = 5;
+        this.setFishType("Clown");
+        
         try {
             this.spriteDroite = ImageIO.read(getClass().getResource("../assets/ClownfishRight.png"));
             this.spriteGauche = ImageIO.read(getClass().getResource("../assets/ClownfishLeft.png"));
@@ -34,34 +37,25 @@ public class ClownFish extends Fish{
         }
     }
     
-    @Override 
-    public void miseAJour(){
+    
+    @Override
+    protected void deplacer(){
+        int speed = this.getSpeed();
+        
         if (this.toucheGauche) {
-            x -= 5;
+            x -= speed;
         }
         if (this.toucheDroite) {
-            x += 5;
+            x += speed;
         }
         if (this.toucheBas) {
-            y += 5;
+            y += speed;
         }
         if (this.toucheHaut) {
-            y -= 5;
-        }
-        
-        if (x > 576 - sprite.getWidth()) { // collision avec le bord droit de la scene
-            x = 576 - sprite.getWidth();
-        }
-        if (x < 0) { // collision avec le bord gauche de la scene
-            x = 0;
-        }
-        if (y > 324 - sprite.getHeight()) { // collision avec le bord Haut de la scene
-            y = 324 - sprite.getHeight();
-        }
-        if (y < 0) { // collision avec le bord inferieur de la scene
-            y = 0;
+            y -= speed;
         }
     }
+    
     
     @Override
     public void useAbility(){

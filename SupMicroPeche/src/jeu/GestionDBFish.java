@@ -38,12 +38,13 @@ public class GestionDBFish {
 
     public void UpdateBase(Fish f) {
         try {
-            PreparedStatement requete = this.connexion.prepareStatement("UPDATE joueur SET x = ?, y = ?, sens = ? WHERE id = ?");
+            PreparedStatement requete = this.connexion.prepareStatement("UPDATE Fishes SET x = ?, y = ?, sens = ?, health = ? WHERE id = ?");
 
             requete.setInt(1, f.getX());
             requete.setInt(2, f.getY());
             requete.setBoolean(3, f.getSens());
-            requete.setString(4, f.getId());
+            requete.setInt(4, f.getHealth());
+            requete.setInt(5, f.getId());
 
             requete.executeUpdate();
             requete.close();
@@ -56,8 +57,8 @@ public class GestionDBFish {
     
     public void InsertInBase(Fish f) {
         try {
-            PreparedStatement requete = connexion.prepareStatement("INSERT INTO joueur (id, x, y, sens, health) VALUES (?, ?, ?, ?, ?)");
-            requete.setString(1, f.getId());
+            PreparedStatement requete = connexion.prepareStatement("INSERT INTO Fishes (id, x, y, sens, health) VALUES (?, ?, ?, ?, ?)");
+            requete.setInt(1, f.getId());
             requete.setInt(2, f.getX());
             System.out.println(f.getX());
             requete.setInt(3, f.getY());

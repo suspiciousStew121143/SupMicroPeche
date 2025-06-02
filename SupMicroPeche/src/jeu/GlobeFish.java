@@ -16,8 +16,8 @@ import javax.imageio.ImageIO;
 public class GlobeFish extends Fish{
     
     
-    public GlobeFish(String id, GestionDBFish db){
-        super(id, db);
+    public GlobeFish(GestionDBFish db){
+        super(db);
         
         this.x = 100;
         this.y = 250;
@@ -25,6 +25,9 @@ public class GlobeFish extends Fish{
         this.toucheDroite = false;
         this.toucheBas = false;
         this.toucheHaut = false;
+        this.speed = 5;
+        this.setFishType("Globe");
+        
         try {
             this.spriteDroite = ImageIO.read(getClass().getResource("../assets/GlobeFishRight.png"));
             this.spriteGauche = ImageIO.read(getClass().getResource("../assets/GlobeFishLeft.png"));
@@ -34,32 +37,21 @@ public class GlobeFish extends Fish{
         }
     }
     
-    @Override 
-    public void miseAJour(){
+    @Override
+    protected void deplacer(){
+        int speed = this.getSpeed();
+        
         if (this.toucheGauche) {
-            x -= 2;
+            x -= speed;
         }
         if (this.toucheDroite) {
-            x += 2;
+            x += speed;
         }
         if (this.toucheBas) {
-            y += 2;
+            y += speed;
         }
         if (this.toucheHaut) {
-            y -= 2;
-        }
-        
-        if (x > 576 - sprite.getWidth()) { // collision avec le bord droit de la scene
-            x = 576 - sprite.getWidth();
-        }
-        if (x < 0) { // collision avec le bord gauche de la scene
-            x = 0;
-        }
-        if (y > 324 - sprite.getHeight()) { // collision avec le bord Haut de la scene
-            y = 324 - sprite.getHeight();
-        }
-        if (y < 0) { // collision avec le bord inferieur de la scene
-            y = 0;
+            y -= speed;
         }
     }
     

@@ -14,8 +14,8 @@ import javax.imageio.ImageIO;
  */
 public class SwordFish extends Fish {
     
-    public SwordFish(String id, GestionDBFish db){
-        super(id, db);
+    public SwordFish(GestionDBFish db){
+        super(db);
         
         this.x = 100;
         this.y = 250;
@@ -23,6 +23,10 @@ public class SwordFish extends Fish {
         this.toucheDroite = false;
         this.toucheBas = false;
         this.toucheHaut = false;
+        this.speed = 10;
+        this.setFishType("Sword");
+        
+        
         try {
             this.spriteDroite = ImageIO.read(getClass().getResource("../assets/SwordFishRight.png"));
             this.spriteGauche = ImageIO.read(getClass().getResource("../assets/SwordFishLeft.png"));
@@ -32,32 +36,21 @@ public class SwordFish extends Fish {
         }
     }
     
-    @Override 
-    public void miseAJour(){
+    @Override
+    protected void deplacer(){
+        int speed = this.getSpeed();
+        
         if (this.toucheGauche) {
-            x -= 10;
+            x -= speed;
         }
         if (this.toucheDroite) {
-            x += 10;
+            x += speed;
         }
         if (this.toucheBas) {
-            y += 10;
+            y += speed;
         }
         if (this.toucheHaut) {
-            y -= 10;
-        }
-        
-        if (x > 576 - sprite.getWidth()) { // collision avec le bord droit de la scene
-            x = 576 - sprite.getWidth();
-        }
-        if (x < 0) { // collision avec le bord gauche de la scene
-            x = 0;
-        }
-        if (y > 324 - sprite.getHeight()) { // collision avec le bord Haut de la scene
-            y = 324 - sprite.getHeight();
-        }
-        if (y < 0) { // collision avec le bord inferieur de la scene
-            y = 0;
+            y -= speed;
         }
     }
     

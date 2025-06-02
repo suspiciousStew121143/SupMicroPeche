@@ -7,7 +7,10 @@ package jeu;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  *
  * @author lkerguil
@@ -24,39 +27,52 @@ public class BoatFactory {
 
     // @override
     public Boat createEntity() {
-        String id = ReadListAndCreateId();
-        Boat b = new Boat(id, db);
+        Boat b = new Boat(db);
+        
+        int newId = PushBoatInDBWhenCreated(b);
+        b.setId(newId);
+        
         this.jeu.getBoatList().add(b);
-        PushBoatInBDWhenCreated(b);
         return b;
     }
     
-    public String ReadListAndCreateId(){
-        // Vérifie combien de Boat sont dans la boatList et crée un ID en conséquence.
-        //          ------------ EXEMPLE ------------------
-        // SI       1 Boat est dans la liste avec l'id = B1
-        // ALORS    le prochain Boat créé aura    l'id = B2
-        int nb_boat = this.jeu.getBoatList().size()+1;
-        System.out.println(nb_boat);
-        String id = "B" + nb_boat;
-        return id;
-    }
+//    public String ReadListAndCreateId(){
+//        // Vérifie combien de Boat sont dans la boatList et crée un ID en conséquence.
+//        //          ------------ EXEMPLE ------------------
+//        // SI       1 Boat est dans la liste avec l'id = B1
+//        // ALORS    le prochain Boat créé aura    l'id = B2
+//        int nb_boat = this.jeu.getBoatList().size()+1;
+//        System.out.println(nb_boat);
+//        String id = "B" + nb_boat;
+//        return id;
+//    }
 
-    public void PushBoatInBDWhenCreated(Boat b){   
+    public int PushBoatInDBWhenCreated(Boat b){   
         try {
             Connection connexion = DriverManager.getConnection("jdbc:mariadb://nemrod.ens2m.fr:3306/2024-2025_s2_vs1_tp2_supmicropêche", "etudiant", "YTDTvj9TR3CDYCmP");
-            PreparedStatement requete = connexion.prepareStatement("INSERT INTO Boat VALUES (?, ?, ?, ?)");
-            requete.setString(1, b.getId());
+            PreparedStatement requete = connexion.prepareStatement("INSERT INTO Boat (boat_type, x, y, sens) VALUES (?, ?, ?, ?)",
+                                                                   Statement.RETURN_GENERATED_KEYS);
+            
+//            requete.setInt(1, b.getId());
+            requete.setString(1, b.getBoatType());
             requete.setInt(2, b.getX());
             requete.setInt(3, b.getY());
             requete.setBoolean(4, b.getSens());
+            
             requete.executeUpdate();
+            
+            ResultSet rs = requete.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1); // retourne l’id auto-généré
+            }
 
             requete.close();
             connexion.close();
+            
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        return -1;
     }  
     
     

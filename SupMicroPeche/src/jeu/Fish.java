@@ -15,14 +15,14 @@ import javax.imageio.ImageIO;
  *
  * @author guillaume.laurent
  */
-public class Fish extends Entity {
+public abstract class Fish extends Entity {
 
     protected boolean toucheGauche, toucheDroite, toucheBas, toucheHaut;
-    private String name;
+    private String fishType;
     private float knockBack;
     private GestionDBFish db;
     
-    public Fish(String id, GestionDBFish db) {
+    public Fish(GestionDBFish db) {
         try {
             this.spriteDroite = ImageIO.read(getClass().getResource("../assets/ClownfishRight.png"));
             this.spriteGauche = ImageIO.read(getClass().getResource("../assets/ClownfishLeft.png"));
@@ -43,35 +43,35 @@ public class Fish extends Entity {
         System.out.println("Player créé avec id = " + this.id);
    
     }
+    
+    protected abstract void deplacer();
 
-    @Override
     public void miseAJour() {
-        if (this.toucheGauche) {
-            x -= 5;
-        }
-        if (this.toucheDroite) {
-            x += 5;
-        }
-        if (this.toucheBas) {
-            y += 5;
-        }
-        if (this.toucheHaut) {
-            y -= 5;
-        }
+        // ========== DEPLACEMENT ==============================================
+        // La methode "deplacer" est propre à chaque sous-classe de Fish et est
+        // donc détaillée dans chaque sous-classe (ClownFish, GlobeFish,
+        // SwordFish, WhaleFish).
+        //
+        // Il est cependant nécessaire d'initialiser la méthode abstraite dans
+        // la casse mère Fish (voir ci-dessus : protected abstract void).
         
+        deplacer();
         
-        if (x > 576 - sprite.getWidth()) { // collision avec le bord droit de la scene
+        // ========== COLLISION ================================================
+        if (x > 576 - sprite.getWidth()) {       // collision avec le bord droit
             x = 576 - sprite.getWidth();
         }
-        if (x < 0) { // collision avec le bord gauche de la scene
+        if (x < 0) {                            // collision avec le bord gauche
             x = 0;
         }
-        if (y > 324 - sprite.getHeight()) { // collision avec le bord Bas de la scene
+        if (y > 324 - sprite.getHeight()) {        // collision avec le bord Bas
             y = 324 - sprite.getHeight();
         }
-        if (y < 50+ sprite.getHeight()) { // collision avec le bord haut de la scene
+        if (y < 50+ sprite.getHeight()) {         // collision avec le bord haut
             y = 50+ sprite.getHeight();
         }
+        
+        // ========== MAJ DE LA BASE DE DONNEES ================================
         db.UpdateBase(this);
     }
     
@@ -103,6 +103,15 @@ public class Fish extends Entity {
     public int getHealthBar() {
         return healthBar;
     }
+
+    public String getFishType() {
+        return fishType;
+    }
+
+    public void setFishType(String fishType) {
+        this.fishType = fishType;
+    }
+    
     
 }
 

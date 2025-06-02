@@ -16,9 +16,10 @@ import javax.imageio.ImageIO;
 public class Boat extends Entity{
     
     private int a=1;
+    private String boatType;
     private GestionDBBoat db;
     
-    public Boat(String id, GestionDBBoat db){
+    public Boat(GestionDBBoat db){
         try {
             this.spriteDroite = ImageIO.read(getClass().getResource("../assets/Boat_Right.png"));
             this.spriteGauche = ImageIO.read(getClass().getResource("../assets/Boat_Left.png"));
@@ -26,7 +27,7 @@ public class Boat extends Entity{
         } catch (IOException ex) {
             Logger.getLogger(Boat.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.id = id;
+        this.setBoatType("Classic");
         this.sens = true;
         this.db = db;
         lancer();
@@ -51,5 +52,15 @@ public class Boat extends Entity{
     public void lancer() {
         this.x = 1;
         this.y = 50;
-    }  
+    }
+
+    public String getBoatType() {
+        return boatType;
+    }
+
+    public void setBoatType(String boatType) {
+        this.boatType = boatType;
+    }
+    
+    
 }

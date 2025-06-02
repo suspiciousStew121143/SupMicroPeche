@@ -50,7 +50,7 @@ public class GestionDBBoat {
             //System.out.println(b.getX());
             requete.setInt(2, b.getY());
             requete.setBoolean(3, b.getSens());
-            requete.setString(4, b.getId());
+            requete.setInt(4, b.getId());
 
             requete.executeUpdate();
             requete.close();
@@ -64,7 +64,7 @@ public class GestionDBBoat {
     public void InsertInBase(Boat b) {
         try {
             PreparedStatement requete = connexion.prepareStatement("INSERT INTO Boat VALUES (?, ?, ?, ?)");
-            requete.setString(1, b.getId());
+            requete.setInt(1, b.getId());
             requete.setInt(2, b.getX());
             requete.setInt(3, b.getY());
             requete.setBoolean(4, b.getSens());

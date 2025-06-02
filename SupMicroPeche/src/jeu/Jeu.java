@@ -49,7 +49,7 @@ public class Jeu {
 
         // Initialisation des usines à entités
         this.aBoatFactory = new BoatFactory(this);
-        aBoatFactory.createEntity();
+        aBoatFactory.createEntity(); // Un bateau est créé initialement
         
         this.aFishFactory = new FishFactory(this);
     }
