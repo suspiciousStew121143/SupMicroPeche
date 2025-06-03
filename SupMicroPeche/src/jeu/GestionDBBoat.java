@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.ArrayList;
 
 /**
  *
@@ -31,20 +32,12 @@ public class GestionDBBoat {
         this.user = "etudiant";
         this.motdepasse = "YTDTvj9TR3CDYCmP";
 
-        try {
-            System.out.println("tentative de connexion");
-            this.connexion = DriverManager.getConnection(this.adresseBase, this.user, this.motdepasse);
-
-        } catch (SQLException ex) {
-            System.out.println("Erreur");
-            ex.printStackTrace();
-        }
-
     }
 
     public void UpdateBase(Boat b) {
         try {
-            PreparedStatement requete = this.connexion.prepareStatement("UPDATE Boat SET x = ?, y = ?, sens = ? WHERE id = ?");
+            Connection conn = SingletonJDBC.getInstance().getConnection();
+            PreparedStatement requete = conn.prepareStatement("UPDATE Boat SET x = ?, y = ?, sens = ? WHERE id = ?");
 
             requete.setInt(1, b.getX());
             //System.out.println(b.getX());
@@ -60,10 +53,11 @@ public class GestionDBBoat {
         }
 
     }
-    
+
     public void InsertInBase(Boat b) {
         try {
-            PreparedStatement requete = connexion.prepareStatement("INSERT INTO Boat VALUES (?, ?, ?, ?)");
+            Connection conn = SingletonJDBC.getInstance().getConnection();
+            PreparedStatement requete = conn.prepareStatement("INSERT INTO Boat VALUES (?, ?, ?, ?)");
             requete.setInt(1, b.getId());
             requete.setInt(2, b.getX());
             requete.setInt(3, b.getY());
@@ -74,7 +68,49 @@ public class GestionDBBoat {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-
     }
+
+    public void syncBoatList(ArrayList<Boat> currentBoats) {
+        try (Connection conn = SingletonJDBC.getInstance().getConnection(); PreparedStatement requete = conn.prepareStatement("SELECT id, x, y, sens, boat_type FROM Boat"); ResultSet rs = requete.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int x = rs.getInt("x");
+                int y = rs.getInt("y");
+                boolean sens = rs.getBoolean("sens");
+                String type = rs.getString("boat_type");
+
+                Boat matchingBoat = null;
+                for (Boat b : currentBoats) {
+                    if (b.getId() == id) {
+                        matchingBoat = b;
+                        break;
+                    }
+                }
+
+                if (matchingBoat != null) {
+                    if (matchingBoat.getX() != x || matchingBoat.getY() != y
+                            || matchingBoat.getSens() != sens || !matchingBoat.getBoatType().equals(type)) {
+
+                        matchingBoat.setX(x);
+                        matchingBoat.setY(y);
+                        matchingBoat.setSens(sens);
+                        matchingBoat.setBoatType(type);
+                    }
+                } else {
+                    Boat b = new Boat(this);
+                    b.setId(id);
+                    b.setX(x);
+                    b.setY(y);
+                    b.setSens(sens);
+                    b.setBoatType(type);
+                    currentBoats.add(b);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
-   

@@ -72,6 +72,10 @@ public class Entity{
     public Boolean getSens(){
         return sens;
     }
+
+    public void setSens(Boolean sens) {
+        this.sens = sens;
+    }
     
     public void setId(int id){
         this.id = id;

@@ -49,8 +49,6 @@ public class Jeu {
 
         // Initialisation des usines à entités
         this.aBoatFactory = new BoatFactory(this);
-        aBoatFactory.createEntity(); // Un bateau est créé initialement
-        
         this.aFishFactory = new FishFactory(this);
     }
    
@@ -94,6 +92,7 @@ public class Jeu {
         // if (this.aWaste.getY() > 324 - aWaste.getHeight()) {
         //     this.aWaste.lancer(aBoat);
         // }
+        
         for (Item item : this.itemList) {
             item.miseAJour();
         }
@@ -105,8 +104,8 @@ public class Jeu {
         for (Fish fish : this.fishList) {
             fish.miseAJour();
         }
-
-        // 3. Gérer les interactions (collisions et autres règles)
+        
+        loadEntitiesFromDB();
     }
 
     public boolean estTermine() {
@@ -135,6 +134,14 @@ public class Jeu {
             }
         }
         return false; // Aucune collision détectée
+    }
+    
+    public void loadEntitiesFromDB(){
+        GestionDBBoat dbBoat = new GestionDBBoat();
+        dbBoat.syncBoatList(this.boatList);
+        
+        GestionDBFish dbFish = new GestionDBFish();
+        dbFish.syncFishList(this.fishList);
     }
 
     // Getters pour accéder aux listes

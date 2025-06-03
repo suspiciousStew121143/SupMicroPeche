@@ -49,8 +49,8 @@ public class BoatFactory {
 
     public int PushBoatInDBWhenCreated(Boat b){   
         try {
-            Connection connexion = DriverManager.getConnection("jdbc:mariadb://nemrod.ens2m.fr:3306/2024-2025_s2_vs1_tp2_supmicropêche", "etudiant", "YTDTvj9TR3CDYCmP");
-            PreparedStatement requete = connexion.prepareStatement("INSERT INTO Boat (boat_type, x, y, sens) VALUES (?, ?, ?, ?)",
+            Connection conn = SingletonJDBC.getInstance().getConnection();
+            PreparedStatement requete = conn.prepareStatement("INSERT INTO Boat (boat_type, x, y, sens) VALUES (?, ?, ?, ?)",
                                                                    Statement.RETURN_GENERATED_KEYS);
             
 //            requete.setInt(1, b.getId());
@@ -67,7 +67,7 @@ public class BoatFactory {
             }
 
             requete.close();
-            connexion.close();
+            conn.close();
             
         } catch (SQLException ex) {
             ex.printStackTrace();

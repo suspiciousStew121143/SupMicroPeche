@@ -63,8 +63,8 @@ public class FishFactory {
 
     public int PushPlayerInDBWhenCreated(Fish f){   
         try {
-            Connection connexion = DriverManager.getConnection("jdbc:mariadb://nemrod.ens2m.fr:3306/2024-2025_s2_vs1_tp2_supmicropêche", "etudiant", "YTDTvj9TR3CDYCmP");
-            PreparedStatement requete = connexion.prepareStatement("INSERT INTO Fishes (fish_type, x, y, sens, health) VALUES (?, ?, ?, ?, ?)",
+            Connection conn = SingletonJDBC.getInstance().getConnection();
+            PreparedStatement requete = conn.prepareStatement("INSERT INTO Fishes (fish_type, x, y, sens, health) VALUES (?, ?, ?, ?, ?)",
                                                                    Statement.RETURN_GENERATED_KEYS);
             
 //            requete.setString(1, f.getId());
@@ -83,7 +83,7 @@ public class FishFactory {
             }
             
             requete.close();
-            connexion.close();
+            conn.close();
             
         } catch (SQLException ex) {
             ex.printStackTrace();
