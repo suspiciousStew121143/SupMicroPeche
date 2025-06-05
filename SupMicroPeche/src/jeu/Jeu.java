@@ -25,6 +25,7 @@ public class Jeu {
     public ArrayList<Boat> boatList;
     private BoatFactory aBoatFactory;
     private FishFactory aFishFactory;
+    private Fish localFish;
     
     // private GestionBD aBD;
 
@@ -50,6 +51,8 @@ public class Jeu {
         // Initialisation des usines à entités
         this.aBoatFactory = new BoatFactory(this);
         this.aFishFactory = new FishFactory(this);
+        // La création du poisson local (celui qui appartient à telle ou telle
+        // fenêtre, se fait désormais dans FenetreDeJeu (plus logique)
     }
    
 
@@ -102,7 +105,9 @@ public class Jeu {
         }
 
         for (Fish fish : this.fishList) {
-            fish.miseAJour();
+            if (this.localFish == fish){
+                fish.miseAJour();
+            }
         }
         
         loadEntitiesFromDB();
@@ -142,6 +147,7 @@ public class Jeu {
         
         GestionDBFish dbFish = new GestionDBFish();
         dbFish.syncFishList(this.fishList);
+        System.out.println("loadEntitiesFromDB" + this.fishList);
     }
 
     // Getters pour accéder aux listes
@@ -164,5 +170,15 @@ public class Jeu {
     public FishFactory getFishFactory() {
         return aFishFactory;
     }
+
+    public Fish getLocalFish() {
+        return localFish;
+    }
+
+    public void setLocalFish(Fish localFish) {
+        this.localFish = localFish;
+    }
+    
+    
  
 }

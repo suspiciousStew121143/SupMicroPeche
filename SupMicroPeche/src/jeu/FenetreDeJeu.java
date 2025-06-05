@@ -23,6 +23,7 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
     private JLabel jLabel1;
     private Jeu jeu;
     private Timer timer;
+    private Fish localFish;
 
     public FenetreDeJeu() {
         // initialisation de la fenetre
@@ -41,6 +42,8 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
 
         // Création du jeu
         this.jeu = new Jeu();
+        Fish f = this.jeu.getFishFactory().createEntity("clown");
+        this.jeu.setLocalFish(f);
 
         // Création du Timer qui appelle this.actionPerformed() toutes les 40ms
         this.timer = new Timer(40, this);
@@ -50,7 +53,35 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
         this.addKeyListener(this);
     }
 
+
     // Méthode appelée par le timer et qui effectue la boucle de jeu
+    @Override
+    public void keyPressed(KeyEvent evt) {
+        if (this.jeu.getLocalFish() == null) return;
+
+        if (evt.getKeyCode() == evt.VK_D) this.jeu.getLocalFish().setToucheDroite(true);
+        if (evt.getKeyCode() == evt.VK_Q) this.jeu.getLocalFish().setToucheGauche(true);
+        if (evt.getKeyCode() == evt.VK_Z) this.jeu.getLocalFish().setToucheHaut(true);
+        if (evt.getKeyCode() == evt.VK_S) this.jeu.getLocalFish().setToucheBas(true);
+
+        // Créations (conservent la logique actuelle)
+        if (evt.getKeyCode() == evt.VK_B) this.jeu.getBoatFactory().createEntity();
+        if (evt.getKeyCode() == evt.VK_F) this.jeu.getFishFactory().createEntity("clown");
+        if (evt.getKeyCode() == evt.VK_G) this.jeu.getFishFactory().createEntity("globe");
+        if (evt.getKeyCode() == evt.VK_H) this.jeu.getFishFactory().createEntity("sword");
+        if (evt.getKeyCode() == evt.VK_J) this.jeu.getFishFactory().createEntity("whale");
+    }
+
+    @Override
+    public void keyReleased(KeyEvent evt) {
+        if (this.jeu.getLocalFish() == null) return;
+
+        if (evt.getKeyCode() == evt.VK_D) this.jeu.getLocalFish().setToucheDroite(false);
+        if (evt.getKeyCode() == evt.VK_Q) this.jeu.getLocalFish().setToucheGauche(false);
+        if (evt.getKeyCode() == evt.VK_Z) this.jeu.getLocalFish().setToucheHaut(false);
+        if (evt.getKeyCode() == evt.VK_S) this.jeu.getLocalFish().setToucheBas(false);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         this.jeu.miseAJour();
@@ -69,54 +100,54 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
     @Override
     public void keyTyped(KeyEvent evt) {
     }
-
-    @Override
-    public void keyPressed(KeyEvent evt) {
-        if (evt.getKeyCode() == evt.VK_D) {
-            this.jeu.getFishList().get(0).setToucheDroite(true);
-        }
-        if (evt.getKeyCode() == evt.VK_Q) {
-            this.jeu.getFishList().get(0).setToucheGauche(true);
-        }
-        if (evt.getKeyCode() == evt.VK_Z) {
-            this.jeu.getFishList().get(0).setToucheHaut(true);
-        }
-        if (evt.getKeyCode() == evt.VK_S) {
-            this.jeu.getFishList().get(0).setToucheBas(true);
-        }
-        // Creer des bateaux
-        if (evt.getKeyCode() == evt.VK_B) {
-            this.jeu.getBoatFactory().createEntity();
-        }
-        // Creer des poissons
-        if (evt.getKeyCode() == evt.VK_F) {
-            this.jeu.getFishFactory().createEntity("clown");
-        }
-        if (evt.getKeyCode() == evt.VK_G) {
-            this.jeu.getFishFactory().createEntity("globe");
-        }
-        if (evt.getKeyCode() == evt.VK_H) {
-            this.jeu.getFishFactory().createEntity("sword");
-        }
-        if (evt.getKeyCode() == evt.VK_J) {
-            this.jeu.getFishFactory().createEntity("whale");
-        }
-    }
-    
-    @Override
-    public void keyReleased(KeyEvent evt) {
-        if (evt.getKeyCode() == evt.VK_D) {
-            this.jeu.getFishList().get(0).setToucheDroite(false);
-        }
-        if (evt.getKeyCode() == evt.VK_Q) {
-            this.jeu.getFishList().get(0).setToucheGauche(false);
-        }
-        if (evt.getKeyCode() == evt.VK_Z) {
-            this.jeu.getFishList().get(0).setToucheHaut(false);
-        }
-        if (evt.getKeyCode() == evt.VK_S) {
-            this.jeu.getFishList().get(0).setToucheBas(false);
-        }
-    }
+//
+//    @Override
+//    public void keyPressed(KeyEvent evt) {
+//        if (evt.getKeyCode() == evt.VK_D) {
+//            this.jeu.getFishList().get(0).setToucheDroite(true);
+//        }
+//        if (evt.getKeyCode() == evt.VK_Q) {
+//            this.jeu.getFishList().get(0).setToucheGauche(true);
+//        }
+//        if (evt.getKeyCode() == evt.VK_Z) {
+//            this.jeu.getFishList().get(0).setToucheHaut(true);
+//        }
+//        if (evt.getKeyCode() == evt.VK_S) {
+//            this.jeu.getFishList().get(0).setToucheBas(true);
+//        }
+//        // Creer des bateaux
+//        if (evt.getKeyCode() == evt.VK_B) {
+//            this.jeu.getBoatFactory().createEntity();
+//        }
+//        // Creer des poissons
+//        if (evt.getKeyCode() == evt.VK_F) {
+//                this.jeu.getFishFactory().createEntity("clown");
+//        }
+//        if (evt.getKeyCode() == evt.VK_G) {
+//            this.jeu.getFishFactory().createEntity("globe");
+//        }
+//        if (evt.getKeyCode() == evt.VK_H) {
+//            this.jeu.getFishFactory().createEntity("sword");
+//        }
+//        if (evt.getKeyCode() == evt.VK_J) {
+//            this.jeu.getFishFactory().createEntity("whale");
+//        }
+//    }
+//    
+//    @Override
+//    public void keyReleased(KeyEvent evt) {
+//        if (evt.getKeyCode() == evt.VK_D) {
+//            this.jeu.getFishList().get(0).setToucheDroite(false);
+//        }
+//        if (evt.getKeyCode() == evt.VK_Q) {
+//            this.jeu.getFishList().get(0).setToucheGauche(false);
+//        }
+//        if (evt.getKeyCode() == evt.VK_Z) {
+//            this.jeu.getFishList().get(0).setToucheHaut(false);
+//        }
+//        if (evt.getKeyCode() == evt.VK_S) {
+//            this.jeu.getFishList().get(0).setToucheBas(false);
+//        }
+//    }
     
 }

@@ -16,6 +16,8 @@ import java.util.ArrayList;
  * @author lkerguil
  */
 public class GestionDBFish {
+
+    private Jeu jeu;
     private String adresseBase;
     private String user;
     private String motdepasse;
@@ -23,6 +25,7 @@ public class GestionDBFish {
 
     public GestionDBFish() {
         System.out.println("GestionDBBoat est appelée");
+        
         this.adresseBase = "jdbc:mariadb://nemrod.ens2m.fr:3306/2024-2025_s2_vs1_tp2_supmicropêche";
         this.user = "etudiant";
         this.motdepasse = "YTDTvj9TR3CDYCmP";
@@ -35,39 +38,57 @@ public class GestionDBFish {
 //            System.out.println("Erreur");
 //            ex.printStackTrace();
 //        }
-
     }
 
     public void UpdateBase(Fish f) {
         try {
             Connection conn = SingletonJDBC.getInstance().getConnection();
-            PreparedStatement requete = conn.prepareStatement("UPDATE Fishes SET x = ?, y = ?, sens = ?, health = ? WHERE id = ?");
-
+            PreparedStatement requete = conn.prepareStatement("UPDATE Fishes SET x = ?, y = ?, sens = ?, health = ?, isHost = ? WHERE id = ?");
+            
+//            int isHost = f.getIsHost();
+//            if (isHost == 1){
+//                requete.setInt(1, f.getX());
+//                requete.setInt(2, f.getY());
+//                requete.setBoolean(3, f.getSens());
+//                requete.setInt(4, f.getHealth());
+//                requete.setInt(5, f.getIsHost());
+//                requete.setInt(6, f.getId());
+//
+//                requete.executeUpdate();
+//                requete.close();
+//            }
             requete.setInt(1, f.getX());
             requete.setInt(2, f.getY());
             requete.setBoolean(3, f.getSens());
             requete.setInt(4, f.getHealth());
-            requete.setInt(5, f.getId());
+            requete.setInt(5, f.getIsHost());
+            requete.setInt(6, f.getId());
 
             requete.executeUpdate();
             requete.close();
-
+            
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
     }
-    
+
     public void InsertInBase(Fish f) {
         try {
             Connection conn = SingletonJDBC.getInstance().getConnection();
-            PreparedStatement requete = conn.prepareStatement("INSERT INTO Fishes (id, x, y, sens, health) VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement requete = conn.prepareStatement("INSERT INTO Fishes (id, x, y, sens, health, isHost) VALUES (?, ?, ?, ?, ?, ?)");
             requete.setInt(1, f.getId());
             requete.setInt(2, f.getX());
             System.out.println(f.getX());
             requete.setInt(3, f.getY());
             requete.setBoolean(4, f.getSens());
             requete.setInt(5, f.getHealthBar());
+            this.jeu = new Jeu();
+            if (this.jeu.getFishList().size() < 1) {
+                requete.setInt(6, 1);
+            } else {
+                requete.setInt(6, 0);
+            }
             requete.executeUpdate();
 
             requete.close();
@@ -76,21 +97,20 @@ public class GestionDBFish {
         }
 
     }
-    
-    public void syncFishList(ArrayList<Fish> currentFishes) {
-        try (Connection conn = SingletonJDBC.getInstance().getConnection();
-             PreparedStatement requete = conn.prepareStatement("SELECT id, fish_type, x, y, sens, health FROM Fishes");
-             ResultSet rs = requete.executeQuery()) {
 
+    public void syncFishList(ArrayList<Fish> currentFishes) {
+        try (Connection conn = SingletonJDBC.getInstance().getConnection(); PreparedStatement requete = conn.prepareStatement("SELECT id, fish_type, x, y, sens, health, isHost FROM Fishes"); ResultSet rs = requete.executeQuery()) {
             while (rs.next()) {
+                
                 int id = rs.getInt("id");
                 String type = rs.getString("fish_type");
                 int x = rs.getInt("x");
                 int y = rs.getInt("y");
                 boolean sens = rs.getBoolean("sens");
                 int health = rs.getInt("health");
+                int isHost = rs.getInt("isHost");
                 
-
+                // Trouver tous les poissons dans la fishList qui matchent avec la DB
                 Fish matchingFish = null;
                 for (Fish f : currentFishes) {
                     if (f.getId() == id) {
@@ -100,15 +120,16 @@ public class GestionDBFish {
                 }
 
                 if (matchingFish != null) {
-                    if (matchingFish.getX() != x || matchingFish.getY() != y ||
-                        matchingFish.getSens() != sens || !matchingFish.getFishType().equals(type)) {
+                    if (matchingFish.getX() != x || matchingFish.getY() != y
+                            || matchingFish.getSens() != sens || !matchingFish.getFishType().equals(type)) {
 
                         matchingFish.setX(x);
                         matchingFish.setY(y);
                         matchingFish.setSens(sens);
                         matchingFish.setFishType(type);
+                        matchingFish.setIsHost(isHost);
                     }
-                }else {
+                } else {
                     Fish f;
                     switch (type.toLowerCase()) {
                         case "clown":
@@ -135,14 +156,16 @@ public class GestionDBFish {
                     f.setY(y);
                     f.setSens(sens);
                     f.setHealth(health);
+                    f.setIsHost(isHost);
 
                     currentFishes.add(f);
                 }
+                
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
+
+
 }

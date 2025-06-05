@@ -67,7 +67,7 @@ public class BoatFactory {
             }
 
             requete.close();
-            conn.close();
+//            conn.close();
             
         } catch (SQLException ex) {
             ex.printStackTrace();

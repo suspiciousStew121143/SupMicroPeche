@@ -21,6 +21,7 @@ public abstract class Fish extends Entity {
     private String fishType;
     private float knockBack;
     private GestionDBFish db;
+    private int isHost;
     
     public Fish(GestionDBFish db) {
         try {
@@ -41,6 +42,7 @@ public abstract class Fish extends Entity {
         this.db = db;
         this.id = id;
         System.out.println("Player créé avec id = " + this.id);
+        
    
     }
     
@@ -53,7 +55,7 @@ public abstract class Fish extends Entity {
         // SwordFish, WhaleFish).
         //
         // Il est cependant nécessaire d'initialiser la méthode abstraite dans
-        // la casse mère Fish (voir ci-dessus : protected abstract void).
+        // la classe mère Fish (voir ci-dessus : protected abstract void).
         
         deplacer();
         
@@ -111,6 +113,15 @@ public abstract class Fish extends Entity {
     public void setFishType(String fishType) {
         this.fishType = fishType;
     }
+
+    public int getIsHost() {
+        return isHost;
+    }
+
+    public void setIsHost(int isHost) {
+        this.isHost = isHost;
+    }
+    
     
     
 }

@@ -27,7 +27,7 @@ public class FishFactory {
 
     // @override
     public Fish createEntity(String type) {
-//        String id = ReadListAndCreateId();
+        this.jeu.loadEntitiesFromDB();
         Fish f;
         switch (type) {
         case "clown":
@@ -47,10 +47,16 @@ public class FishFactory {
             break;
         }
         
+        if(this.jeu.getFishList().isEmpty()){
+            f.setIsHost(1);
+        } else {
+            f.setIsHost(0);
+        }
+        
         int newId = PushPlayerInDBWhenCreated(f);
         f.setId(newId);
-        
         this.jeu.getFishList().add(f);
+        
         return f;
     }
     
@@ -64,7 +70,7 @@ public class FishFactory {
     public int PushPlayerInDBWhenCreated(Fish f){   
         try {
             Connection conn = SingletonJDBC.getInstance().getConnection();
-            PreparedStatement requete = conn.prepareStatement("INSERT INTO Fishes (fish_type, x, y, sens, health) VALUES (?, ?, ?, ?, ?)",
+            PreparedStatement requete = conn.prepareStatement("INSERT INTO Fishes (fish_type, x, y, sens, health, isHost) VALUES (?, ?, ?, ?, ?, ?)",
                                                                    Statement.RETURN_GENERATED_KEYS);
             
 //            requete.setString(1, f.getId());
@@ -74,6 +80,7 @@ public class FishFactory {
             requete.setInt(3, f.getY());
             requete.setBoolean(4, f.getSens());
             requete.setInt(5, f.getHealthBar());
+            requete.setInt(6, f.getIsHost());
             
             requete.executeUpdate();
             
@@ -83,7 +90,7 @@ public class FishFactory {
             }
             
             requete.close();
-            conn.close();
+//            conn.close();
             
         } catch (SQLException ex) {
             ex.printStackTrace();
