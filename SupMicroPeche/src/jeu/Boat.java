@@ -36,7 +36,7 @@ public class Boat extends Entity{
    
     @Override
     public void miseAJour() {
-        if(x>=(576-this.getWidth())){
+        if(x>=(Parameters.windowLength-this.getWidth())){
             a=-1;
             this.isGoingRight = false;
         }    
@@ -45,7 +45,7 @@ public class Boat extends Entity{
             this.isGoingRight = true;
         }
         x=x+a*3;
-        y = 50 + (int)(Math.sin(x/20)*4);
+        y = 180 + (int)(Math.sin(x/20)*4);
         this.Timer += 1;
     }
     

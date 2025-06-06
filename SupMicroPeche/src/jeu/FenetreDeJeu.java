@@ -27,18 +27,21 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
 
     public FenetreDeJeu() {
         // initialisation de la fenetre
-        this.setSize(576, 324);
-        this.setResizable(false);
+        this.setSize(Parameters.windowLength, Parameters.windowHeight);
+        
+        this.setResizable(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.jLabel1 = new JLabel();
-        this.jLabel1.setPreferredSize(new java.awt.Dimension(576, 324));
+        this.jLabel1.setPreferredSize(new java.awt.Dimension(Parameters.windowLength, Parameters.windowHeight));
         this.setContentPane(this.jLabel1);
         this.pack();
 
         // Creation du buffer pour l'affichage du jeu et recuperation du contexte graphique
-        this.framebuffer = new BufferedImage(this.jLabel1.getWidth(), this.jLabel1.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        this.framebuffer = new BufferedImage(Parameters.windowLength, Parameters.windowHeight, BufferedImage.TYPE_INT_ARGB);
         this.jLabel1.setIcon(new ImageIcon(framebuffer));
         this.contexte = this.framebuffer.createGraphics();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setResizable(false);
 
         // Création du jeu
         this.jeu = new Jeu();
@@ -132,6 +135,10 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
                 this.jeu.setHasJoinedGame(true);
             }
         }
+        if (evt.getKeyCode() == evt.VK_SPACE) {
+            this.jeu.getPlayerList().get(0).setToucheEspace(true);
+            this.jeu.getPlayerList().get(0).setToucheEspaceFrontMontant(true);
+        }
     }
 
     @Override
@@ -150,6 +157,10 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
         }
         if (evt.getKeyCode() == evt.VK_A) { //Ajour d'ue touche pour utiliser la capacité du joueur
             this.jeu.getPlayerList().get(0).setToucheA(false);
+        }
+        
+        if (evt.getKeyCode() == evt.VK_SPACE) {
+            this.jeu.getPlayerList().get(0).setToucheEspace(false);
         }
     }
     
