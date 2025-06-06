@@ -23,8 +23,8 @@ public class ItemFactory {
 
     // @override
     public void createEntity(int x_boat, int y_boat, int Height_boat) {
-        Waste w = new Waste(x_boat, y_boat,Height_boat);
-        this.itemList.add(w);
+        Collectable c = new Collectable(x_boat, y_boat,Height_boat);
+        this.itemList.add(c);
     }
 
     public ArrayList<Item> getItemList() {

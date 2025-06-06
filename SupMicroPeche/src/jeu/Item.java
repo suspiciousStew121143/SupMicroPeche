@@ -7,11 +7,12 @@ package jeu;
 
 
 /**
- * Exemple de classe lutin
+ * 
  *
  * @author Louis
  */
 public class Item extends Entity {
+    
     
 
     public Item() {
@@ -23,12 +24,4 @@ public class Item extends Entity {
     public void miseAJour() {
         y = y + 5;
     }      
-
-
-//    public void lancer(Boat b) {
-//        this.x = b.getX();
-//        this.y = b.getY()+b.getHeight();
-//    }
-
 }
-

@@ -5,7 +5,9 @@
  */
 package jeu;
 
+import java.awt.Graphics2D;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -17,11 +19,13 @@ import javax.imageio.ImageIO;
  */
 public class Player extends Entity {
 
-    protected boolean toucheGauche, toucheDroite, toucheBas, toucheHaut;
+    protected boolean toucheGauche, toucheDroite, toucheBas, toucheHaut, toucheEspace, toucheEspaceFrontMontant;
     private String name;
     private float speed;
     private int healthBar;
     private float knockBack;
+    private Collectable collectable;
+    private boolean hasAPickUp;
     
     public Player() {
         try {
@@ -37,6 +41,7 @@ public class Player extends Entity {
         this.toucheDroite = false;
         this.toucheBas = false;
         this.toucheHaut = false;
+        this.toucheEspace = false;
     }
 
     @Override
@@ -55,23 +60,48 @@ public class Player extends Entity {
         }
         
         
-        if (x > 576 - sprite.getWidth()) { // collision avec le bord droit de la scene
-            x = 576 - sprite.getWidth();
+        if (x > Parameters.windowLength - sprite.getWidth()) { // collision avec le bord droit de la scene
+            x = Parameters.windowLength - sprite.getWidth();
         }
         if (x < 0) { // collision avec le bord gauche de la scene
             x = 0;
         }
-        if (y > 324 - sprite.getHeight()) { // collision avec le bord Bas de la scene
-            y = 324 - sprite.getHeight();
+        if (y > Parameters.windowHeight - sprite.getHeight()) { // collision avec le bord Bas de la scene
+            y = Parameters.windowHeight - sprite.getHeight();
         }
         if (y < 50+ sprite.getHeight()) { // collision avec le bord haut de la scene
             y = 50+ sprite.getHeight();
         }
     }
+    
+    public void rendu(Graphics2D contexte) {
+        // Dans le cas où un objet est ramassé on le dessine relativement en dessous du joueur comme s'il était porté
+        if(this.hasAPickUp){
+            this.getCollectable().rendu(contexte,this.getX(), this.getY());
+        }
+        
+        // On dessine ensuite le joueur pour qu'il apparaisse au dessus du collectable
+        contexte.drawImage(this.sprite, (int) x, (int) y, null);
+    }
 
+    public void pickUp(Collectable c){
+        this.setCollectable(c);
+        this.setHasAPickUp(true);
+        c.setIsPickedUp(true);
+    }
+    
+    public void dropPickUp(){
+        this.setHasAPickUp(false);
+        this.getCollectable().setIsPickedUp(false);
+        this.getCollectable().setX(this.getX());
+        this.getCollectable().setY(this.getY()+15);
+        
+        //On va "réinitialiser" le collectable en un objet vide, pour éviter de le conserver dans les attributs du joueur
+        this.setCollectable(new Collectable());
+    }
     
     public void useAbility(){
-
+        
     }
     
     
@@ -94,9 +124,60 @@ public class Player extends Entity {
     public void setToucheBas(boolean etat) {
         this.toucheBas = etat;
     }
+    
     public void setToucheHaut(boolean etat) {
         this.toucheHaut = etat;
     }
+    
+    public void setToucheEspace(boolean toucheEspace) {
+        this.toucheEspace = toucheEspace;
+    }
+
+    public boolean getToucheGauche() {
+        return toucheGauche;
+    }
+
+    public boolean getToucheDroite() {
+        return toucheDroite;
+    }
+
+    public boolean getToucheBas() {
+        return toucheBas;
+    }
+
+    public boolean getToucheHaut() {
+        return toucheHaut;
+    }
+
+    public boolean getToucheEspace() {
+        return toucheEspace;
+    }
+
+    public Collectable getCollectable() {
+        return collectable;
+    }
+
+    public void setCollectable(Collectable collectable) {
+        this.collectable = collectable;
+    }
+
+    public boolean HasAPickUp() {
+        return hasAPickUp;
+    }
+
+    public void setHasAPickUp(boolean hasAPickUp) {
+        this.hasAPickUp = hasAPickUp;
+    }
+
+    public boolean getToucheEspaceFrontMontant() {
+        return toucheEspaceFrontMontant;
+    }
+
+    public void setToucheEspaceFrontMontant(boolean toucheEspaceFrontMontant) {
+        this.toucheEspaceFrontMontant = toucheEspaceFrontMontant;
+    }
+    
+    
     
 }
 

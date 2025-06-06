@@ -40,5 +40,6 @@ public class Waste extends Item {
     public void miseAJour() {
         y = y + 3;
     }
+    
 }
 
