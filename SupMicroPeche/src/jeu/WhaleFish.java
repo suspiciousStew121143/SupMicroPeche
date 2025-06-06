@@ -28,8 +28,8 @@ public class WhaleFish extends Fish{
         
         
         try {
-            this.spriteDroite = ImageIO.read(getClass().getResource("../assets/WhaleFishRight.png"));
-            this.spriteGauche = ImageIO.read(getClass().getResource("../assets/WhaleFishLeft.png"));
+            this.spriteDroite = ImageIO.read(getClass().getResource("../resources/WhaleFishRight.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("../resources/WhaleFishLeft.png"));
             this.sprite = spriteDroite; // par défaut, le poisson regarde à droite
         } catch (IOException ex) {
             Logger.getLogger(WhaleFish.class.getName()).log(Level.SEVERE, null, ex);
@@ -42,9 +42,11 @@ public class WhaleFish extends Fish{
         
         if (this.toucheGauche) {
             x -= speed;
+            this.setSens(true);
         }
         if (this.toucheDroite) {
             x += speed;
+            this.setSens(false);
         }
         if (this.toucheBas) {
             y += speed;

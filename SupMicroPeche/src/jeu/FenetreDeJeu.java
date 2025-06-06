@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,6 +26,8 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
     private Timer timer;
     private Fish localFish;
 
+
+
     public FenetreDeJeu() {
         // initialisation de la fenetre
         this.setSize(576, 324);
@@ -42,7 +45,7 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
 
         // Création du jeu
         this.jeu = new Jeu();
-        Fish f = this.jeu.getFishFactory().createEntity("clown");
+        Fish f = this.jeu.getFishFactory().createEntity("globe");
         this.jeu.setLocalFish(f);
 
         // Création du Timer qui appelle this.actionPerformed() toutes les 40ms
@@ -58,13 +61,18 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
             public void windowClosing(java.awt.event.WindowEvent e) {
                 Fish localFish = jeu.getLocalFish();
                 
-                if (jeu.getLocalFish() != null) {
-                    new GestionDBFish().deleteFishFromDB(jeu.getLocalFish().getId());
-                    
-                    if (localFish.getIsHost() == 1){
-                        new GestionDBBoat().deleteBoatsFromDB();
+                if (jeu.getLocalFish() != null) { // si le poisson local quitte la partie
+                    new GestionDBFish().deleteFishFromDB(jeu.getLocalFish().getId()); // On le supprime de la db
+                }
+                if (localFish.getIsHost() == 1){ // si l'hôte quitte la partie
+                    new GestionDBBoat().deleteBoatsFromDB(); // Supprimer tous les bateaux
+                    ArrayList<Fish> fishList = jeu.getFishFactory().getFishList();
+                    GestionDBFish gestionDBFish = new GestionDBFish();
+                    for (Fish fish : fishList) {
+                        gestionDBFish.deleteFishFromDB(fish.getId());
                     }
                 }
+                
             }
         });
     }
@@ -116,4 +124,51 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
     @Override
     public void keyTyped(KeyEvent evt) {
     }
+    
+    
+
+    // @Override
+    // public void keyPressed(KeyEvent evt) {
+    //     if (evt.getKeyCode() == evt.VK_D) {
+    //         this.jeu.getPlayerList().get(0).setToucheDroite(true);
+    //     }
+    //     if (evt.getKeyCode() == evt.VK_Q) {
+    //         this.jeu.getPlayerList().get(0).setToucheGauche(true);
+    //     }
+    //     if (evt.getKeyCode() == evt.VK_Z) {
+    //         this.jeu.getPlayerList().get(0).setToucheHaut(true);
+    //     }
+    //     if (evt.getKeyCode() == evt.VK_S) {
+    //         this.jeu.getPlayerList().get(0).setToucheBas(true);
+    //     }
+    //     if (evt.getKeyCode() == evt.VK_B) {
+    //         this.jeu.getBoatFactory().createEntity();
+    //     }
+    //     if (evt.getKeyCode() == evt.VK_ENTER) {
+    //         if (!this.jeu.getHasJoinedGame()){
+    //             this.jeu.getPlayerList().add(new Player());
+    //             this.jeu.setHasJoinedGame(true);
+    //         }
+    //     }
+        
+    // }
+
+    // @Override
+    // public void keyReleased(KeyEvent evt) {
+    //     if (evt.getKeyCode() == evt.VK_D) {
+    //         this.jeu.getPlayerList().get(0).setToucheDroite(false);
+    //     }
+    //     if (evt.getKeyCode() == evt.VK_Q) {
+    //         this.jeu.getPlayerList().get(0).setToucheGauche(false);
+    //     }
+    //     if (evt.getKeyCode() == evt.VK_Z) {
+    //         this.jeu.getPlayerList().get(0).setToucheHaut(false);
+    //     }
+    //     if (evt.getKeyCode() == evt.VK_S) {
+    //         this.jeu.getPlayerList().get(0).setToucheBas(false);
+    //     }
+    // }
+
+
+    
 }

@@ -22,6 +22,7 @@ public class GestionDBFish {
     private String user;
     private String motdepasse;
     private Connection connexion;
+    private FishFactory aFishFactory;
 
     public GestionDBFish() {
         
@@ -71,7 +72,7 @@ public class GestionDBFish {
             requete.setBoolean(4, f.getSens());
             requete.setInt(5, f.getHealthBar());
             this.jeu = new Jeu();
-            if (this.jeu.getFishList().size() < 1) {
+            if (this.aFishFactory.getFishList().size() < 1) {
                 requete.setInt(6, 1);
             } else {
                 requete.setInt(6, 0);

@@ -20,28 +20,22 @@ public class Jeu {
 
     private BufferedImage decor;
     private int score;
-    public ArrayList<Item> itemList;
-    public ArrayList<Fish> fishList;
-    public ArrayList<Boat> boatList;
+    public ItemFactory anItemFactory;
     private BoatFactory aBoatFactory;
     private FishFactory aFishFactory;
     private Fish localFish;
     private long lastSyncTime = 0;
     
+    private boolean hasJoinedGame;
     // private GestionBD aBD;
 
     public Jeu() {
-        // =====================================================================
-        // -- INITIALISATION DU JEU --
-        // =====================================================================
         // Initialisation du score
         this.score = 0;
 
-        // Initialisation des listes
-        this.boatList = new ArrayList<>();
-        this.fishList = new ArrayList<>();
-        this.itemList = new ArrayList<>();
-
+        // Initialisation du boolean pour éviter de rejoindre plusieurs fois la partie
+        this.hasJoinedGame = false;
+        
         // Initialisation du décor
         try {
             this.decor = ImageIO.read(getClass().getResource("../assets/Background.png"));
@@ -51,7 +45,9 @@ public class Jeu {
 
         // Initialisation des usines à entités
         this.aBoatFactory = new BoatFactory(this);
+        this.anItemFactory = new ItemFactory(this);
         this.aFishFactory = new FishFactory(this);
+        
         // La création du poisson local (celui qui appartient à telle ou telle
         // fenêtre, se fait désormais dans FenetreDeJeu (plus logique)
     }
@@ -71,6 +67,9 @@ public class Jeu {
         for (Fish fish : this.fishList) {
             contexte.drawImage(fish.sprite, (int) fish.getX(), (int) fish.getY(), null);
         }
+        // for (Fish fish : this.aFishFactory.getFishList()) {
+        //     fish.rendu(contexte);
+        // }
 
         for (Boat boat : this.boatList) {
             contexte.drawImage(boat.sprite, (int) boat.getX(), (int) boat.getY(), null);
@@ -78,41 +77,34 @@ public class Jeu {
 
         // 3. Texte
         contexte.drawString("Score : " + score, 10, 20);
+        
     }
 
     public void miseAJour() {
-        // 1. MAJ du poisson en fonction des commandes des joueurs
-
-        // 2. MAJ des autres éléments (objets, monstres, etc.)
-        
-        // int n = this.entityList.size();
-        // for (int i=0; i<n; i++ ) {
-        //     Entity e = this.entityList.get(i);
-        //     e.miseAJour();
-        // }
-        // this.aBoat.miseAJour(aBoat);
-        // this.aWaste.miseAJour();
-        // // 3. Gérer les intéractions (collisions et autres règles)
-        // if (this.aWaste.getY() > 324 - aWaste.getHeight()) {
-        //     this.aWaste.lancer(aBoat);
-        // }
-        
-        for (Item item : this.itemList) {
+        // ===== ITEMS ====
+        for (Item item : this.anItemFactory.getItemList()) {
             item.miseAJour();
         }
-
-        for (Boat boat : this.boatList) {
-            boat.miseAJour();
-        }
-
-        for (Fish fish : this.fishList) {
+        
+        // ===== PLAYERS =====
+        for (Fish fish : this.aFishFactory.getFishList()) {
             if (this.localFish == fish){
                 fish.miseAJour();
             }
-//            fish.miseAJour();
         }
         
-         loadEntitiesFromDB();
+        // ====== BOATS ======
+        for (Boat boat : this.aBoatFactory.getBoatList()) {
+            boat.miseAJour();
+        }
+         // Lâcher de déchêts
+        for (Boat boat : this.aBoatFactory.getBoatList()) {
+            if(boat.getClock() > 100){
+                this.anItemFactory.createEntity((int) boat.getX(),(int) boat.getY(), (int) boat.getHeight());
+                boat.setClock(0);
+            }
+        }
+        loadEntitiesFromDB();
     }
 
     public boolean estTermine() {
@@ -129,14 +121,14 @@ public class Jeu {
 
     // COLLISIONS
     public boolean fishCollideItem() {
-        for (Fish fish : fishList) {
-            for (Item item : itemList) {
+        for (Fish fish : this.aFishFactory.getFishList()) {
+            for (Item item : anItemFactory.getItemList()) {
                 if (!((item.getX() >= fish.getX() + fish.getWidth())    // Trop à droite
                     || (item.getX() + item.getWidth() <= fish.getX())    // Trop à gauche
                     || (item.getY() >= fish.getY() + fish.getHeight())   // Trop en bas
                     || (item.getY() + item.getHeight() <= fish.getY()))) // Trop en haut
                 {
-                    return true; // Collision détectée
+                    return false; // Collision détectée
                 }
             }
         }
@@ -145,23 +137,10 @@ public class Jeu {
     
     public void loadEntitiesFromDB(){
         GestionDBBoat dbBoat = new GestionDBBoat();
-        dbBoat.syncBoatList(this.boatList);
+        dbBoat.syncBoatList(this.aBoatFactory.getBoatList());
         
         GestionDBFish dbFish = new GestionDBFish();
-        dbFish.syncFishList(this.fishList);
-    }
-
-    // Getters pour accéder aux listes
-    public ArrayList<Item> getItemList() {
-        return this.itemList;
-    }
-
-    public ArrayList<Fish> getFishList() {
-        return this.fishList;
-    }
-
-    public ArrayList<Boat> getBoatList() {
-        return this.boatList;
+        dbFish.syncFishList(this.aFishFactory.getFishList());
     }
 
     public BoatFactory getBoatFactory() {
@@ -178,8 +157,6 @@ public class Jeu {
 
     public void setLocalFish(Fish localFish) {
         this.localFish = localFish;
-    }
-    
-    
+    }    
  
 }

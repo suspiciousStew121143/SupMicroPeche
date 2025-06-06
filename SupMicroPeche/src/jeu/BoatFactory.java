@@ -18,21 +18,42 @@ import java.sql.Statement;
 public class BoatFactory {
 
     private Jeu jeu;
+    private ArrayList<Boat> boatList;
+    
+    // public BoatFactory(Jeu jeu) {
+    //     this.jeu = jeu;
+    //     this.boatList = new ArrayList<Boat>();
+    // }
+
+    // public void createEntity() {
+    //     String id = ReadListAndCreateId();
+    //     Boat b = new Boat(id);
+    //     this.boatList.add(b);
+    //     PushBoatInBDWhenCreated(b);
+    // }
+    
+    // public String ReadListAndCreateId(){
+    //     int nb_boat = this.boatList.size()+1;
+    //     System.out.println(nb_boat);
+    //     String id = "B" + nb_boat;
+    //     return id;
+    // }
     private GestionDBBoat db;
 
     public BoatFactory(Jeu jeu) {
         this.jeu = jeu;
         this.db = new GestionDBBoat();
+        this.boatList = new ArrayList<Boat>();
     }
 
     // @override
     public Boat createEntity() {
-        Boat b = new Boat(db);
+        Boat b = new Boat(jeu, db);
         
         int newId = PushBoatInDBWhenCreated(b);
         b.setId(newId);
         
-        this.jeu.getBoatList().add(b);
+        this.boatList.add(b);
         return b;
     }
     

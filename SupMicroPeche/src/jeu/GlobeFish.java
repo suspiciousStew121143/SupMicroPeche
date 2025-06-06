@@ -29,8 +29,8 @@ public class GlobeFish extends Fish{
         this.setFishType("Globe");
         
         try {
-            this.spriteDroite = ImageIO.read(getClass().getResource("../assets/GlobeFishRight.png"));
-            this.spriteGauche = ImageIO.read(getClass().getResource("../assets/GlobeFishLeft.png"));
+            this.spriteDroite = ImageIO.read(getClass().getResource("../resources/GlobeFishRight.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("../resources/GlobeFishLeft.png"));
             this.sprite = spriteDroite; // par défaut, le poisson regarde à droite
         } catch (IOException ex) {
             Logger.getLogger(GlobeFish.class.getName()).log(Level.SEVERE, null, ex);
@@ -43,9 +43,11 @@ public class GlobeFish extends Fish{
         
         if (this.toucheGauche) {
             x -= speed;
+            this.setSens(true);
         }
         if (this.toucheDroite) {
             x += speed;
+            this.setSens(false);
         }
         if (this.toucheBas) {
             y += speed;

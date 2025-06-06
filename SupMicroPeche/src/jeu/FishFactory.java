@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,10 +20,12 @@ public class FishFactory {
 
     private Jeu jeu;
     private GestionDBFish db;
+    private ArrayList<Fish> fishList;
 
     public FishFactory(Jeu jeu) {
         this.jeu = jeu;
         this.db = new GestionDBFish();
+        this.fishList = new ArrayList<Fish>() ;
     }
 
     // @override
@@ -47,7 +50,7 @@ public class FishFactory {
             break;
         }
         
-        if(this.jeu.getFishList().isEmpty()){
+        if(this.fishList.isEmpty()){
             f.setIsHost(1);
         } else {
             f.setIsHost(0);
@@ -55,7 +58,7 @@ public class FishFactory {
         
         int newId = PushPlayerInDBWhenCreated(f);
         f.setId(newId);
-        this.jeu.getFishList().add(f);
+        this.fishList.add(f);
         
         return f;
     }
@@ -96,6 +99,16 @@ public class FishFactory {
             ex.printStackTrace();
         }
         return -1;
-    }  
+    }
+
+    public ArrayList<Fish> getFishList() {
+        return fishList;
+    }
+
+    public void setFishList(ArrayList<Fish> fishList) {
+        this.fishList = fishList;
+    }
+    
+    
 
 }
