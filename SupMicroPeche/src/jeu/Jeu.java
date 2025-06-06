@@ -109,6 +109,7 @@ public class Jeu {
             if (this.localFish == fish){
                 fish.miseAJour();
             }
+//            fish.miseAJour();
         }
         
          loadEntitiesFromDB();

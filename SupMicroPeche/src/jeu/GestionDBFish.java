@@ -99,6 +99,7 @@ public class GestionDBFish {
                 boolean sens = rs.getBoolean("sens");
                 int health = rs.getInt("health");
                 int isHost = rs.getInt("isHost");
+
                 
                 // Trouver tous les poissons dans la fishList qui matchent avec la DB
                 Fish matchingFish = null;

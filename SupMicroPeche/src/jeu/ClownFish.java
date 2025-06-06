@@ -44,13 +44,11 @@ public class ClownFish extends Fish{
         
         if (this.toucheGauche) {
             x -= speed;
-            this.sprite = this.spriteGauche;
-            markChanged();
+            this.setSens(true);
         }
         if (this.toucheDroite) {
             x += speed;
-            this.sprite = this.spriteDroite;
-            markChanged();
+            this.setSens(false);
         }
         if (this.toucheBas) {
             y += speed;
@@ -58,6 +56,7 @@ public class ClownFish extends Fish{
         if (this.toucheHaut) {
             y -= speed;
         }
+        
     }
     
     

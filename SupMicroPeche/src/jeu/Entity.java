@@ -91,6 +91,13 @@ public class Entity{
 
     public void setSens(Boolean sens) {
         this.sens = sens;
+        if (this.getSens()){
+            System.out.println("gauche");
+            this.sprite = this.spriteGauche;
+        } else {
+            System.out.println("droite");
+            this.sprite = this.spriteDroite;
+        }
         markChanged();
     }
     

@@ -22,6 +22,7 @@ public abstract class Fish extends Entity {
     private float knockBack;
     private GestionDBFish db;
     private int isHost;
+    protected Boolean lastSens = false;
     
     public Fish(GestionDBFish db) {
         try {
@@ -47,6 +48,7 @@ public abstract class Fish extends Entity {
     }
     
     protected abstract void deplacer();
+    
 
     public void miseAJour() {
         // ========== DEPLACEMENT ==============================================
@@ -72,7 +74,14 @@ public abstract class Fish extends Entity {
         if (y < 50+ sprite.getHeight()) {         // collision avec le bord haut
             y = 50+ sprite.getHeight();
         }
-        
+
+//        if (this.getSens()){
+//            System.out.println("gauche");
+//            this.sprite = this.spriteGauche;
+//        } else {
+//            System.out.println("droite");
+//            this.sprite = this.spriteDroite;
+//        }
         // ========== MAJ DE LA BASE DE DONNEES ================================
 //        db.UpdateBase(this);
         // test
@@ -81,6 +90,7 @@ public abstract class Fish extends Entity {
             resetChangedFlag();
         }
     }
+    
     
     public void useAbility(){
 
