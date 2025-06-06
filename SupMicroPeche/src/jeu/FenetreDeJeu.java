@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -61,8 +62,13 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
                 if (jeu.getLocalFish() != null) {
                     new GestionDBFish().deleteFishFromDB(jeu.getLocalFish().getId());
                     
-                    if (localFish.getIsHost() == 1){
-                        new GestionDBBoat().deleteBoatsFromDB();
+                    if (localFish.getIsHost() == 1){ // Si l'hôte quitte la partie
+                        new GestionDBBoat().deleteBoatsFromDB(); // supprime tous les bateaux
+                        ArrayList<Fish> fishList = jeu.getFishList();
+                        GestionDBFish gestionDBFish = new GestionDBFish();
+                        for (Fish fish : fishList) {
+                            gestionDBFish.deleteFishFromDB(fish.getId()); // supprime tous les poissons
+                        }
                     }
                 }
             }

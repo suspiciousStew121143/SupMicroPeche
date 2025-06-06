@@ -43,9 +43,11 @@ public class GlobeFish extends Fish{
         
         if (this.toucheGauche) {
             x -= speed;
+            this.setSens(true);
         }
         if (this.toucheDroite) {
             x += speed;
+            this.setSens(false);
         }
         if (this.toucheBas) {
             y += speed;
