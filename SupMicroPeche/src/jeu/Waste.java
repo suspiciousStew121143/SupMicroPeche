@@ -6,6 +6,7 @@
 package jeu;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -38,7 +39,20 @@ public class Waste extends Item {
     
     @Override
     public void miseAJour() {
-        y = y + 3;
+    }
+    
+    @Override
+    public void miseAJour(ArrayList<Colonne> colonnes) {  //Permet de renvoyer les Waste vers le ciel lorqu'ils sont alignés avec une colonne
+
+        for (Colonne c : colonnes) {
+            if (c.isActive()) {  // On ne regarde que les colonnes actives
+                if ((x < (c.getX() + c.getWidth())) && (x > (c.getX()-this.sprite.getWidth()))) {
+                    y = y - 30;
+                } else {
+                    y = y + 3;
+                }
+            }
+        }
     }
 }
 

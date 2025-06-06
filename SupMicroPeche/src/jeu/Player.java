@@ -17,7 +17,8 @@ import javax.imageio.ImageIO;
  */
 public class Player extends Entity {
 
-    protected boolean toucheGauche, toucheDroite, toucheBas, toucheHaut;
+    protected boolean toucheGauche, toucheDroite, toucheBas, toucheHaut, toucheA, cooldownA, soin;
+    protected double fishStep, fishDash;
     private String name;
     private float speed;
     private int healthBar;
@@ -37,21 +38,24 @@ public class Player extends Entity {
         this.toucheDroite = false;
         this.toucheBas = false;
         this.toucheHaut = false;
+        this.toucheA = false;
+        this.cooldownA = false;
+        this.fishStep=1;        //Multiplicateur de vitesse propre à chaque poisson      
     }
 
     @Override
     public void miseAJour() {
         if (this.toucheGauche) {
-            x -= 5;
+            x -= fishStep * 5;
         }
         if (this.toucheDroite) {
-            x += 5;
+            x += fishStep * 5;
         }
         if (this.toucheBas) {
-            y += 5;
+            y += fishStep * 5;
         }
         if (this.toucheHaut) {
-            y -= 5;
+            y -= fishStep * 5;
         }
         
         
@@ -97,6 +101,20 @@ public class Player extends Entity {
     public void setToucheHaut(boolean etat) {
         this.toucheHaut = etat;
     }
-    
+    public void setToucheA(boolean etat) {
+        this.toucheA = etat;
+    }
+
+    public boolean isToucheA() {
+        return this.toucheA;
+    }
+
+    public void setCooldownA(boolean valeur) { //Permet d'activer/désactiver le cooldown
+        this.cooldownA = valeur;
+    }
+
+    public boolean isCooldownA() { //Permet de savoir si la touche A est en cooldown
+        return this.cooldownA;
+    }
 }
 

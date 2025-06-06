@@ -30,6 +30,16 @@ public class BoatFactory {
         PushBoatInBDWhenCreated(b);
     }
     
+    public void deleteEntity(String id) {   //Permet de delete un bateau de la liste et de la base de donnée
+        for (Boat b : this.boatList) {
+            if (b.getId().equals(id)) {
+                this.boatList.remove(b);
+                DeleteBoatInBDWhenCreated(b);
+                break;
+            }
+        }
+    }
+    
     public String ReadListAndCreateId(){
         int nb_boat = this.boatList.size()+1;
         System.out.println(nb_boat);
@@ -53,6 +63,20 @@ public class BoatFactory {
             ex.printStackTrace();
         }
     }  
+    
+    public void DeleteBoatInBDWhenCreated(Boat b){   //Permet de supprimer un bateau de la base de donnée
+        try {
+            Connection connexion = DriverManager.getConnection("jdbc:mariadb://nemrod.ens2m.fr:3306/2024-2025_s2_vs1_tp2_supmicropêche", "etudiant", "YTDTvj9TR3CDYCmP");
+            PreparedStatement requete = connexion.prepareStatement("DELETE FROM Boat WHERE id = ?");
+            requete.setString(1, b.getId());
+            requete.executeUpdate();
+
+            requete.close();
+            connexion.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public ArrayList<Boat> getBoatList() {
         return boatList;
@@ -62,6 +86,17 @@ public class BoatFactory {
         this.boatList = boatList;
     }
     
+
     
-    
+    public void startFactory() {  //Permet de créer un bateau automatiquement toutes les tant de secondes aléatoirement sur un intervalle
+        int delay = 5000 + (int) (Math.random() * 15000); // entre 5000ms (5s) et 20000ms (20s)
+
+        new java.util.Timer().schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                BoatFactory.this.createEntity(); // Crée le bateau
+                startFactory(); // Programme la création suivante
+            }
+        }, delay);
+    }
 }

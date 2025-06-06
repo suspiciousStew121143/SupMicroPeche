@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -22,9 +23,13 @@ public class Jeu {
     private int score;
     public ArrayList<Player> playerList;
     public ItemFactory anItemFactory;
-    private BoatFactory aBoatFactory;
+    public BoatFactory aBoatFactory;
+    
+    private ArrayList<Colonne> colonnes;
     
     private boolean hasJoinedGame;
+    
+    private Random rand = new Random();
     
     // private GestionBD aBD;
 
@@ -55,12 +60,20 @@ public class Jeu {
         // Uiliser l'usine à entités
         
         this.aBoatFactory = new BoatFactory(this);
-//        aBoatFactory.createEntity();
+        this.aBoatFactory.startFactory();       //Démarre l'usine à bateau pour en produire automatiquement
 
         this.anItemFactory = new ItemFactory(this);
-       
-        // this.aBD = new GestionBD();
+         
+        // this.aBD = new GestionBD();   
         
+        this.colonnes = new ArrayList<>();    
+        
+        for (int i = 0; i < 10; i++) {      // Création des 10 colonnes au départ
+            Colonne c = new Colonne();   
+            c.setX(this.decor.getWidth()*i/10 + (int) (c.getWidth()/2));
+            c.setY(this.decor.getHeight() - (int) c.getHeight());
+            colonnes.add(c);
+        }
     }
    
 
@@ -70,7 +83,7 @@ public class Jeu {
             contexte.drawImage(this.decor, 0, 0, null);
         }
 
-        // 2. Sprites
+//         2. Sprites
         for (Item item : this.anItemFactory.getItemList()) {
             item.rendu(contexte);
         }
@@ -82,7 +95,11 @@ public class Jeu {
         for (Boat boat : this.aBoatFactory.getBoatList()) {
             boat.rendu(contexte);
         }
-
+        
+        for (Colonne c : colonnes) { //Affichage des colonnes
+            c.rendu(contexte);
+        }
+        
         // 3. Texte
         contexte.drawString("Score : " + score, 10, 20);
     }
@@ -93,27 +110,28 @@ public class Jeu {
         // 2. MAJ des autres éléments (objets, monstres, etc.)
         
         for (Item item : this.anItemFactory.getItemList()) {
-            item.miseAJour();
+            item.miseAJour(colonnes);
+            
         }
 
         for (Boat boat : this.aBoatFactory.getBoatList()) {
             boat.miseAJour();
+            if (BoatCollideItem()) {
+                this.aBoatFactory.deleteEntity(boat.getId());
+            }
+            // Lâcher de déchets
+            if (boat.getTimer() > 100) {
+                this.anItemFactory.createEntity((int) boat.getX(), (int) boat.getY(), (int) boat.getHeight());
+                boat.setTimer(0);
+            }
         }
 
         for (Player player : this.playerList) {
             player.miseAJour();
         }
+        
 
         // 3. Gérer les interactions (collisions et autres règles)
-        
-        // Lâcher de déchêts
-        
-        for (Boat boat : this.aBoatFactory.getBoatList()) {
-            if(boat.getTimer() > 100){
-                this.anItemFactory.createEntity((int) boat.getX(),(int) boat.getY(), (int) boat.getHeight());
-                boat.setTimer(0);
-            }
-        }
     }
 
     public boolean estTermine() {
@@ -144,6 +162,20 @@ public class Jeu {
         return false; // Aucune collision détectée
     }
 
+    public boolean BoatCollideItem() {
+        for (Boat boat : this.aBoatFactory.getBoatList()) {
+            for (Item item : anItemFactory.getItemList()) {
+                if (!((item.getX() >= boat.getX() + boat.getWidth())    // Trop à droite
+                    || (item.getX() + item.getWidth() <= boat.getX())    // Trop à gauche
+                    || (item.getY() >= boat.getY() + boat.getHeight())   // Trop en bas
+                    || (item.getY() + item.getHeight() <= boat.getY()))) // Trop en haut
+                {
+                    return true; // Collision détectée
+                }
+            }
+        }
+        return false; // Aucune collision détectée
+    }
     // Getters pour accéder aux listes
 
     public ArrayList<Player> getPlayerList() {
@@ -166,5 +198,19 @@ public class Jeu {
         this.hasJoinedGame = hasJoinedGame;
     }
     
-    
+    public void activerColonnesAleatoires() { //Permet d'activer les colonnes qui vont apparaitre
+        // D'abord, désactive toutes les colonnes
+        for (Colonne c : colonnes) {
+            c.setActive(false);
+        }
+        // Choisis 2 indices différents au hasard
+        int first = rand.nextInt(colonnes.size());
+        int second;
+        do {
+            second = rand.nextInt(colonnes.size());
+        } while (second == first);
+        colonnes.get(first).setActive(true);
+        colonnes.get(second).setActive(true);
+    }    
+
 }

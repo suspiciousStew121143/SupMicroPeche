@@ -15,33 +15,43 @@ import javax.imageio.ImageIO;
 public class SwordFish extends Player {
     
     public SwordFish(){
-        this.x = 100;
-        this.y = 250;
+        try {
+            this.spriteDroite = ImageIO.read(getClass().getResource("../assets/ClownfishRight.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("../assets/ClownfishLeft.png"));
+            this.sprite = spriteDroite; // par défaut, le poisson regarde à droite
+        } catch (IOException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.x = 200;
+        this.y = 314;
         this.toucheGauche = false;
         this.toucheDroite = false;
         this.toucheBas = false;
         this.toucheHaut = false;
-        try {
-            this.sprite = ImageIO.read(getClass().getResource("../assets/washer.png"));
-        } catch (IOException ex) {
-            Logger.getLogger(SwordFish.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        fishStep=1.5;
+        fishDash=15;
     }
+
     
-    @Override 
+    @Override
     public void miseAJour(){
+        double dash=0;
+        if (this.toucheA) {     //Appuyer sur la touche A pour déclencher le dash
+            dash = fishDash;
+            }
         if (this.toucheGauche) {
-            x -= 10;
+            x -= fishStep * 5+dash;
         }
         if (this.toucheDroite) {
-            x += 10;
+            x += fishStep * 5+dash;
         }
         if (this.toucheBas) {
-            y += 10;
+            y += fishStep * 5+dash;
         }
         if (this.toucheHaut) {
-            y -= 10;
+            y -= fishStep * 5+dash;
         }
+        
         
         if (x > 576 - sprite.getWidth()) { // collision avec le bord droit de la scene
             x = 576 - sprite.getWidth();
@@ -49,17 +59,12 @@ public class SwordFish extends Player {
         if (x < 0) { // collision avec le bord gauche de la scene
             x = 0;
         }
-        if (y > 324 - sprite.getHeight()) { // collision avec le bord Haut de la scene
+        if (y > 324 - sprite.getHeight()) { // collision avec le bord Bas de la scene
             y = 324 - sprite.getHeight();
         }
-        if (y < 0) { // collision avec le bord inferieur de la scene
-            y = 0;
+        if (y < 50+ sprite.getHeight()) { // collision avec le bord haut de la scene
+            y = 50+ sprite.getHeight();
         }
-    }
-    
-    @Override
-    public void useAbility(){
-        //if 
     }
     
     

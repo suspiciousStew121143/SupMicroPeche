@@ -17,51 +17,29 @@ public class GlobeFish extends Player{
     
     
     public GlobeFish(){
+        try {
+            this.sprite = ImageIO.read(getClass().getResource("../assets/washer.png"));
+        } catch (IOException ex) {
+            Logger.getLogger(GlobeFish.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.x = 100;
         this.y = 250;
         this.toucheGauche = false;
         this.toucheDroite = false;
         this.toucheBas = false;
         this.toucheHaut = false;
-        try {
-            this.sprite = ImageIO.read(getClass().getResource("../assets/washer.png"));
-        } catch (IOException ex) {
-            Logger.getLogger(GlobeFish.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        fishStep=0.5;
     }
     
     @Override 
     public void miseAJour(){
-        if (this.toucheGauche) {
-            x -= 2;
-        }
-        if (this.toucheDroite) {
-            x += 2;
-        }
-        if (this.toucheBas) {
-            y += 2;
-        }
-        if (this.toucheHaut) {
-            y -= 2;
-        }
-        
-        if (x > 576 - sprite.getWidth()) { // collision avec le bord droit de la scene
-            x = 576 - sprite.getWidth();
-        }
-        if (x < 0) { // collision avec le bord gauche de la scene
-            x = 0;
-        }
-        if (y > 324 - sprite.getHeight()) { // collision avec le bord Haut de la scene
-            y = 324 - sprite.getHeight();
-        }
-        if (y < 0) { // collision avec le bord inferieur de la scene
-            y = 0;
-        }
     }
     
     @Override
     public void useAbility(){
-        //if 
+        if (this.toucheA) {     //Appuyer sur la touche A pour déclencher le soin
+            soin = true;
+            } 
     }
     
     

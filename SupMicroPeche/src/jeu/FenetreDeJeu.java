@@ -23,6 +23,7 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
     private JLabel jLabel1;
     private Jeu jeu;
     private Timer timer;
+    private Timer timerColonnes;   // Timer pour changer les colonnes actives toutes les 15s
 
     public FenetreDeJeu() {
         // initialisation de la fenetre
@@ -46,6 +47,18 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
         this.timer = new Timer(40, this);
         this.timer.start();
 
+        // Timer pour changer les colonnes actives toutes les 15 secondes (15000 ms)
+        this.timerColonnes = new Timer(15000, new ActionListener() { // Création d'un timer pour que les colonnes changent d'endroit tousles 15s 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jeu.activerColonnesAleatoires();
+            }
+        });
+        this.timerColonnes.start();
+
+        // Active initialement 2 colonnes
+        jeu.activerColonnesAleatoires();
+
         // Ajout d’un ecouteur clavier
         this.addKeyListener(this);
     }
@@ -58,6 +71,7 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
         this.jLabel1.repaint();
         if (this.jeu.estTermine()) {
             this.timer.stop();
+            this.timerColonnes.stop(); // Arrête le timer des colonnes
         }
     }
 
@@ -84,6 +98,31 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
         if (evt.getKeyCode() == evt.VK_S) {
             this.jeu.getPlayerList().get(0).setToucheBas(true);
         }
+        if (evt.getKeyCode() == evt.VK_A) {     //Permet de dash en appuyant sur A pour le SwordFish
+            Player player = this.jeu.getPlayerList().get(0);
+
+            // Si l'action n'est pas déjà active et pas en cooldown
+            if (!player.isToucheA() && !player.isCooldownA()) {
+                player.setToucheA(true);
+                player.setCooldownA(true); // Active le cooldown
+
+                // Arrête l'action après 0.2 seconde (200 ms)
+                new java.util.Timer().schedule(new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        player.setToucheA(false);
+                    }
+                }, 200);
+
+                // Autorise de nouveau l'action après 1 seconde (1000 ms)
+                new java.util.Timer().schedule(new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        player.setCooldownA(false);
+                    }
+                }, 1000);
+            }
+        }
         if (evt.getKeyCode() == evt.VK_B) {
             this.jeu.getBoatFactory().createEntity();
         }
@@ -93,7 +132,6 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
                 this.jeu.setHasJoinedGame(true);
             }
         }
-        
     }
 
     @Override
@@ -109,6 +147,9 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
         }
         if (evt.getKeyCode() == evt.VK_S) {
             this.jeu.getPlayerList().get(0).setToucheBas(false);
+        }
+        if (evt.getKeyCode() == evt.VK_A) { //Ajour d'ue touche pour utiliser la capacité du joueur
+            this.jeu.getPlayerList().get(0).setToucheA(false);
         }
     }
     

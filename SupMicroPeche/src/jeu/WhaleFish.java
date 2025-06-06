@@ -15,47 +15,22 @@ import javax.imageio.ImageIO;
 public class WhaleFish extends Player{
     
     public WhaleFish(){
-        this.x = 100;
-        this.y = 250;
+        try {
+            this.spriteDroite = ImageIO.read(getClass().getResource("../assets/ClownfishRight.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("../assets/ClownfishLeft.png"));
+            this.sprite = spriteDroite; // par défaut, le poisson regarde à droite
+        } catch (IOException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.x = 230;
+        this.y = 314;
         this.toucheGauche = false;
         this.toucheDroite = false;
         this.toucheBas = false;
         this.toucheHaut = false;
-        try {
-            this.sprite = ImageIO.read(getClass().getResource("../assets/washer.png"));
-        } catch (IOException ex) {
-            Logger.getLogger(WhaleFish.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        fishStep=0.2;
     }
     
-    @Override 
-    public void miseAJour(){
-        if (this.toucheGauche) {
-            x -= 1;
-        }
-        if (this.toucheDroite) {
-            x += 1;
-        }
-        if (this.toucheBas) {
-            y += 1;
-        }
-        if (this.toucheHaut) {
-            y -= 1;
-        }
-        
-        if (x > 576 - sprite.getWidth()) { // collision avec le bord droit de la scene
-            x = 576 - sprite.getWidth();
-        }
-        if (x < 0) { // collision avec le bord gauche de la scene
-            x = 0;
-        }
-        if (y > 324 - sprite.getHeight()) { // collision avec le bord Haut de la scene
-            y = 324 - sprite.getHeight();
-        }
-        if (y < 0) { // collision avec le bord inferieur de la scene
-            y = 0;
-        }
-    }
     
     @Override
     public void useAbility(){

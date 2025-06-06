@@ -5,6 +5,8 @@
  */
 package jeu;
 
+import java.util.ArrayList;
+
 
 /**
  * Exemple de classe lutin
@@ -21,9 +23,10 @@ public class Item extends Entity {
     
     @Override
     public void miseAJour() {
-        y = y + 5;
     }      
 
+    public void miseAJour(ArrayList<Colonne> colonnes) {
+    }  
 
 //    public void lancer(Boat b) {
 //        this.x = b.getX();
