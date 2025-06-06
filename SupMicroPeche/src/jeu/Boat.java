@@ -28,7 +28,7 @@ public class Boat extends Entity{
             Logger.getLogger(Boat.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.setBoatType("Classic");
-        this.sens = true;
+        this.sens = false;
         this.db = db;
         lancer();
     }   
@@ -39,10 +39,14 @@ public class Boat extends Entity{
         if(x>=(576-this.getWidth())){
             a=-1;
             this.sprite = this.spriteGauche;
+            System.out.println("en arrière !");
+            this.setSens(true);
         }    
         else if(x<=0){
             a=1; 
             this.sprite = this.spriteDroite;
+            System.out.println("en avant !");
+            this.setSens(false);
         }
         x=x+a*3;
 //        db.UpdateBase(this);
