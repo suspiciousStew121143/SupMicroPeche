@@ -45,7 +45,13 @@ public class Boat extends Entity{
             this.sprite = this.spriteDroite;
         }
         x=x+a*3;
-        db.UpdateBase(this);
+//        db.UpdateBase(this);
+
+        
+        if (hasChanged()){
+            db.UpdateBase(this);
+            resetChangedFlag();
+        }
     }
     
     @Override

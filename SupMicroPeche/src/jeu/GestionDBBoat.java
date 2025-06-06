@@ -25,9 +25,9 @@ public class GestionDBBoat {
     private String user;
     private String motdepasse;
     private Connection connexion;
+    private long lastSyncTime = 0;
 
     public GestionDBBoat() {
-        System.out.println("GestionDBBoat est appelée");
         this.adresseBase = "jdbc:mariadb://nemrod.ens2m.fr:3306/2024-2025_s2_vs1_tp2_supmicropêche";
         this.user = "etudiant";
         this.motdepasse = "YTDTvj9TR3CDYCmP";
@@ -37,13 +37,14 @@ public class GestionDBBoat {
     public void UpdateBase(Boat b) {
         try {
             Connection conn = SingletonJDBC.getInstance().getConnection();
-            PreparedStatement requete = conn.prepareStatement("UPDATE Boat SET x = ?, y = ?, sens = ? WHERE id = ?");
+            PreparedStatement requete = conn.prepareStatement("UPDATE Boat SET boat_type = ?, x = ?, y = ?, sens = ? WHERE id = ?");
 
-            requete.setInt(1, b.getX());
+            requete.setString(1, b.getBoatType());
+            requete.setInt(2, b.getX());
             //System.out.println(b.getX());
-            requete.setInt(2, b.getY());
-            requete.setBoolean(3, b.getSens());
-            requete.setInt(4, b.getId());
+            requete.setInt(3, b.getY());
+            requete.setBoolean(4, b.getSens());
+            requete.setInt(5, b.getId());
 
             requete.executeUpdate();
             requete.close();
@@ -57,11 +58,12 @@ public class GestionDBBoat {
     public void InsertInBase(Boat b) {
         try {
             Connection conn = SingletonJDBC.getInstance().getConnection();
-            PreparedStatement requete = conn.prepareStatement("INSERT INTO Boat VALUES (?, ?, ?, ?)");
+            PreparedStatement requete = conn.prepareStatement("INSERT INTO Boat VALUES (?, ?, ?, ?, ?)");
             requete.setInt(1, b.getId());
-            requete.setInt(2, b.getX());
-            requete.setInt(3, b.getY());
-            requete.setBoolean(4, b.getSens());
+            requete.setString(2, b.getBoatType());
+            requete.setInt(3, b.getX());
+            requete.setInt(4, b.getY());
+            requete.setBoolean(5, b.getSens());
             requete.executeUpdate();
 
             requete.close();
@@ -71,10 +73,11 @@ public class GestionDBBoat {
     }
 
     public void syncBoatList(ArrayList<Boat> currentBoats) {
-        try (Connection conn = SingletonJDBC.getInstance().getConnection(); PreparedStatement requete = conn.prepareStatement("SELECT id, x, y, sens, boat_type FROM Boat"); ResultSet rs = requete.executeQuery()) {
+        try (Connection conn = SingletonJDBC.getInstance().getConnection(); PreparedStatement requete = conn.prepareStatement("SELECT id, boat_type, x, y, sens, boat_type FROM Boat"); ResultSet rs = requete.executeQuery()) {
 
             while (rs.next()) {
                 int id = rs.getInt("id");
+                String boatType = rs.getString("boat_type");
                 int x = rs.getInt("x");
                 int y = rs.getInt("y");
                 boolean sens = rs.getBoolean("sens");
@@ -112,5 +115,18 @@ public class GestionDBBoat {
             e.printStackTrace();
         }
     }
+    
+    public void deleteBoatsFromDB() {
+        try {
+            Connection conn = SingletonJDBC.getInstance().getConnection();
+            PreparedStatement requete = conn.prepareStatement("DELETE FROM Boat");
+            requete.executeUpdate();
+            requete.close();
+            System.out.println("Tous les bateaux ont été supprimés.");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
 }

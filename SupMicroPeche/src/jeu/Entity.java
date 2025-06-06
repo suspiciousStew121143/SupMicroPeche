@@ -21,6 +21,7 @@ public class Entity{
     protected int healthBar;
     protected Boolean sens;
     protected int speed;
+    protected Boolean hasChanged;
 
     
     public void miseAJour() {
@@ -42,15 +43,30 @@ public class Entity{
     }
     
     public void setX(int x){
-        this.x = x;
+//        this.x = x;
+        // test
+        if (this.x != x){
+            this.x = x;
+        }
+        markChanged();
     }
     
     public void setY(int y){
-        this.y = y;
+//        this.y = y;
+        // test
+        if (this.y != y){
+            this.y = y;
+        }
+        markChanged();
     }
     
     public void setHealth(int h){
-        this.healthBar = h;
+//        this.healthBar = h;
+        // test
+        if (this.healthBar != h){
+            this.healthBar = h;
+        }
+        markChanged();
     }
     
     public int getHealth(){
@@ -75,6 +91,7 @@ public class Entity{
 
     public void setSens(Boolean sens) {
         this.sens = sens;
+        markChanged();
     }
     
     public void setId(int id){
@@ -87,6 +104,18 @@ public class Entity{
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+    
+    public void markChanged() {
+        this.hasChanged = true;
+    }
+
+    public boolean hasChanged() {
+        return hasChanged = true;
+    }
+
+    public void resetChangedFlag() {
+        this.hasChanged = false;
     }
     
 }

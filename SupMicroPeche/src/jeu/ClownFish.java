@@ -44,9 +44,13 @@ public class ClownFish extends Fish{
         
         if (this.toucheGauche) {
             x -= speed;
+            this.sprite = this.spriteGauche;
+            markChanged();
         }
         if (this.toucheDroite) {
             x += speed;
+            this.sprite = this.spriteDroite;
+            markChanged();
         }
         if (this.toucheBas) {
             y += speed;

@@ -24,7 +24,6 @@ public class GestionDBFish {
     private Connection connexion;
 
     public GestionDBFish() {
-        System.out.println("GestionDBBoat est appelée");
         
         this.adresseBase = "jdbc:mariadb://nemrod.ens2m.fr:3306/2024-2025_s2_vs1_tp2_supmicropêche";
         this.user = "etudiant";
@@ -45,18 +44,6 @@ public class GestionDBFish {
             Connection conn = SingletonJDBC.getInstance().getConnection();
             PreparedStatement requete = conn.prepareStatement("UPDATE Fishes SET x = ?, y = ?, sens = ?, health = ?, isHost = ? WHERE id = ?");
             
-//            int isHost = f.getIsHost();
-//            if (isHost == 1){
-//                requete.setInt(1, f.getX());
-//                requete.setInt(2, f.getY());
-//                requete.setBoolean(3, f.getSens());
-//                requete.setInt(4, f.getHealth());
-//                requete.setInt(5, f.getIsHost());
-//                requete.setInt(6, f.getId());
-//
-//                requete.executeUpdate();
-//                requete.close();
-//            }
             requete.setInt(1, f.getX());
             requete.setInt(2, f.getY());
             requete.setBoolean(3, f.getSens());
@@ -100,6 +87,9 @@ public class GestionDBFish {
 
     public void syncFishList(ArrayList<Fish> currentFishes) {
         try (Connection conn = SingletonJDBC.getInstance().getConnection(); PreparedStatement requete = conn.prepareStatement("SELECT id, fish_type, x, y, sens, health, isHost FROM Fishes"); ResultSet rs = requete.executeQuery()) {
+            
+            // test
+            
             while (rs.next()) {
                 
                 int id = rs.getInt("id");
@@ -164,6 +154,19 @@ public class GestionDBFish {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    
+    //test
+    public void deleteFishFromDB(int fishId) {
+        try {
+            Connection conn = SingletonJDBC.getInstance().getConnection();
+            PreparedStatement requete = conn.prepareStatement("DELETE FROM Fishes WHERE id = ?");
+            requete.setInt(1, fishId);
+            requete.executeUpdate();
+            requete.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 

@@ -51,6 +51,22 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
 
         // Ajout d’un ecouteur clavier
         this.addKeyListener(this);
+        
+        // test
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                Fish localFish = jeu.getLocalFish();
+                
+                if (jeu.getLocalFish() != null) {
+                    new GestionDBFish().deleteFishFromDB(jeu.getLocalFish().getId());
+                    
+                    if (localFish.getIsHost() == 1){
+                        new GestionDBBoat().deleteBoatsFromDB();
+                    }
+                }
+            }
+        });
     }
 
 
@@ -59,8 +75,8 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
     public void keyPressed(KeyEvent evt) {
         if (this.jeu.getLocalFish() == null) return;
 
-        if (evt.getKeyCode() == evt.VK_D) this.jeu.getLocalFish().setToucheDroite(true);
-        if (evt.getKeyCode() == evt.VK_Q) this.jeu.getLocalFish().setToucheGauche(true);
+        if (evt.getKeyCode() == evt.VK_D)this.jeu.getLocalFish().setToucheDroite(true);
+        if (evt.getKeyCode() == evt.VK_Q)this.jeu.getLocalFish().setToucheGauche(true);
         if (evt.getKeyCode() == evt.VK_Z) this.jeu.getLocalFish().setToucheHaut(true);
         if (evt.getKeyCode() == evt.VK_S) this.jeu.getLocalFish().setToucheBas(true);
 
@@ -100,54 +116,4 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
     @Override
     public void keyTyped(KeyEvent evt) {
     }
-//
-//    @Override
-//    public void keyPressed(KeyEvent evt) {
-//        if (evt.getKeyCode() == evt.VK_D) {
-//            this.jeu.getFishList().get(0).setToucheDroite(true);
-//        }
-//        if (evt.getKeyCode() == evt.VK_Q) {
-//            this.jeu.getFishList().get(0).setToucheGauche(true);
-//        }
-//        if (evt.getKeyCode() == evt.VK_Z) {
-//            this.jeu.getFishList().get(0).setToucheHaut(true);
-//        }
-//        if (evt.getKeyCode() == evt.VK_S) {
-//            this.jeu.getFishList().get(0).setToucheBas(true);
-//        }
-//        // Creer des bateaux
-//        if (evt.getKeyCode() == evt.VK_B) {
-//            this.jeu.getBoatFactory().createEntity();
-//        }
-//        // Creer des poissons
-//        if (evt.getKeyCode() == evt.VK_F) {
-//                this.jeu.getFishFactory().createEntity("clown");
-//        }
-//        if (evt.getKeyCode() == evt.VK_G) {
-//            this.jeu.getFishFactory().createEntity("globe");
-//        }
-//        if (evt.getKeyCode() == evt.VK_H) {
-//            this.jeu.getFishFactory().createEntity("sword");
-//        }
-//        if (evt.getKeyCode() == evt.VK_J) {
-//            this.jeu.getFishFactory().createEntity("whale");
-//        }
-//    }
-//    
-//    @Override
-//    public void keyReleased(KeyEvent evt) {
-//        if (evt.getKeyCode() == evt.VK_D) {
-//            this.jeu.getFishList().get(0).setToucheDroite(false);
-//        }
-//        if (evt.getKeyCode() == evt.VK_Q) {
-//            this.jeu.getFishList().get(0).setToucheGauche(false);
-//        }
-//        if (evt.getKeyCode() == evt.VK_Z) {
-//            this.jeu.getFishList().get(0).setToucheHaut(false);
-//        }
-//        if (evt.getKeyCode() == evt.VK_S) {
-//            this.jeu.getFishList().get(0).setToucheBas(false);
-//        }
-//    }
-    
 }

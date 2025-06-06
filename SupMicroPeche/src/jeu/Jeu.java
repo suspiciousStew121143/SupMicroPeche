@@ -26,6 +26,7 @@ public class Jeu {
     private BoatFactory aBoatFactory;
     private FishFactory aFishFactory;
     private Fish localFish;
+    private long lastSyncTime = 0;
     
     // private GestionBD aBD;
 
@@ -110,7 +111,7 @@ public class Jeu {
             }
         }
         
-        loadEntitiesFromDB();
+         loadEntitiesFromDB();
     }
 
     public boolean estTermine() {
@@ -147,7 +148,6 @@ public class Jeu {
         
         GestionDBFish dbFish = new GestionDBFish();
         dbFish.syncFishList(this.fishList);
-        System.out.println("loadEntitiesFromDB" + this.fishList);
     }
 
     // Getters pour accéder aux listes

@@ -74,7 +74,12 @@ public abstract class Fish extends Entity {
         }
         
         // ========== MAJ DE LA BASE DE DONNEES ================================
-        db.UpdateBase(this);
+//        db.UpdateBase(this);
+        // test
+        if (hasChanged()){
+            db.UpdateBase(this);
+            resetChangedFlag();
+        }
     }
     
     public void useAbility(){
