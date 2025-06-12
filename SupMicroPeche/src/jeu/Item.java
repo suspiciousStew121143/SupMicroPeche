@@ -14,11 +14,9 @@ import java.util.ArrayList;
  * @author Louis
  */
 public class Item extends Entity {
-    
-    
 
     public Item() {
-
+        
     }
 
     

@@ -5,6 +5,7 @@
 package jeu;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,10 +21,14 @@ public class Boat extends Entity{
     private int Timer=0;
     
     public Boat(String id){
+        spriteSheet = new BufferedImage[2];
         try {
-            this.spriteDroite = ImageIO.read(getClass().getResource("../resources/Boat_Right.png"));
-            this.spriteGauche = ImageIO.read(getClass().getResource("../resources/Boat_Left.png"));
-            this.sprite = spriteDroite; // par défaut, le bâteau est orienté vers la droite
+            BufferedImage tileset = ImageIO.read(getClass().getResource("../resources/Boat_128x64.png"));
+            for (int i = 0; i < 2; i++) {
+                int x = i * 128;
+                spriteSheet[i] = tileset.getSubimage(x, 0, 128, 64); // On utilise la même méthode que pour la tilemap pour découper l'image
+            }
+            this.sprite = spriteSheet[1]; // par défaut, le bâteau est orienté vers la droite
             this.isGoingRight = true;
         } catch (IOException ex) {
             Logger.getLogger(Boat.class.getName()).log(Level.SEVERE, null, ex);
@@ -52,7 +57,7 @@ public class Boat extends Entity{
     @Override
     public void lancer() {
         this.x = 1;
-        this.y = 50;
+        this.y = 180;
     }  
 
     public int getTimer() {
@@ -66,9 +71,9 @@ public class Boat extends Entity{
     @Override
     public void rendu(Graphics2D contexte) {
         if(this.isGoingRight){
-            this.sprite = this.spriteDroite;
+            this.sprite = spriteSheet[1];
         } else {
-            this.sprite = this.spriteGauche;
+            this.sprite = spriteSheet[0];
         }
         contexte.drawImage(this.sprite, (int) x, (int) y, null);
     }

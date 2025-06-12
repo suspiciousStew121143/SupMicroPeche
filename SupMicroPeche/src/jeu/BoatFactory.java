@@ -15,12 +15,12 @@ import java.util.ArrayList;
  */
 public class BoatFactory {
 
-    private Jeu jeu;
     private ArrayList<Boat> boatList;
+    private ArrayList<Boat> boatToDeleteList;
     
     public BoatFactory(Jeu jeu) {
-        this.jeu = jeu;
-        this.boatList = new ArrayList<Boat>();
+        this.boatList = new ArrayList<>();
+        this.boatToDeleteList = new ArrayList<>();
     }
 
     public void createEntity() {
@@ -42,8 +42,8 @@ public class BoatFactory {
     
     public String ReadListAndCreateId(){
         int nb_boat = this.boatList.size()+1;
-        System.out.println(nb_boat);
         String id = "B" + nb_boat;
+//        System.out.println(id);
         return id;
     }
 
@@ -85,12 +85,25 @@ public class BoatFactory {
     public void setBoatList(ArrayList<Boat> boatList) {
         this.boatList = boatList;
     }
-    
 
+    public ArrayList<Boat> getBoatToDeleteList() {
+        return boatToDeleteList;
+    }
+
+    public void addBoatToDeleteList(Boat boatToDelete) {
+        this.boatToDeleteList.add(boatToDelete);
+    }
+    
+    public void boatSuppression(){
+        for (Boat b : boatToDeleteList){
+            this.deleteEntity(b.getId()); 
+        }
+        this.boatToDeleteList = new ArrayList<>();
+    }
     
     public void startFactory() {  //Permet de créer un bateau automatiquement toutes les tant de secondes aléatoirement sur un intervalle
         int delay = 5000 + (int) (Math.random() * 15000); // entre 5000ms (5s) et 20000ms (20s)
-
+        
         new java.util.Timer().schedule(new java.util.TimerTask() {
             @Override
             public void run() {

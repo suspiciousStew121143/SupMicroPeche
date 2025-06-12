@@ -22,7 +22,7 @@ public class Colonne extends Entity{
     
     public Colonne() {
         try {
-            this.sprite = ImageIO.read(getClass().getResource("/resources/washer.png"));
+            this.sprite = ImageIO.read(getClass().getResource("/resources/Column.png"));
         } catch (IOException ex) {
             Logger.getLogger(Waste.class.getName()).log(Level.SEVERE, null, ex);
         }

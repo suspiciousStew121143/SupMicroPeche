@@ -101,7 +101,7 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
         if (evt.getKeyCode() == evt.VK_S) {
             this.jeu.getPlayerList().get(0).setToucheBas(true);
         }
-        if (evt.getKeyCode() == evt.VK_A) {     //Permet de dash en appuyant sur A pour le SwordFish
+        if (evt.getKeyCode() == evt.VK_A) {//Permet de dash en appuyant sur A pour le SwordFish
             Player player = this.jeu.getPlayerList().get(0);
 
             // Si l'action n'est pas déjà active et pas en cooldown
@@ -155,7 +155,7 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
         if (evt.getKeyCode() == evt.VK_S) {
             this.jeu.getPlayerList().get(0).setToucheBas(false);
         }
-        if (evt.getKeyCode() == evt.VK_A) { //Ajour d'ue touche pour utiliser la capacité du joueur
+        if (evt.getKeyCode() == evt.VK_A) { //Ajour d'une touche pour utiliser la capacité du joueur
             this.jeu.getPlayerList().get(0).setToucheA(false);
         }
         

@@ -6,6 +6,7 @@
 package jeu;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -29,10 +30,15 @@ public class Player extends Entity {
     private boolean hasAPickUp;
     
     public Player() {
+        spriteSheet = new BufferedImage[2];
         try {
-            this.spriteDroite = ImageIO.read(getClass().getResource("../resources/ClownfishRight.png"));
-            this.spriteGauche = ImageIO.read(getClass().getResource("../resources/ClownfishLeft.png"));
-            this.sprite = spriteDroite; // par défaut, le poisson regarde à droite
+            BufferedImage tileset = ImageIO.read(getClass().getResource("../resources/Clownfish_32x32.png"));
+            for (int i = 0; i < 2; i++) {
+                int x = i * 32;
+                spriteSheet[i] = tileset.getSubimage(x, 0, 32, 32); // On utilise la même méthode que pour la tilemap pour découper l'image
+            }
+            this.sprite = spriteSheet[1]; // par défaut, le joueur est orienté vers la droite
+            this.isGoingRight = true;
         } catch (IOException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -45,7 +51,7 @@ public class Player extends Entity {
         this.toucheA = false;
         this.cooldownA = false;
         this.hasAPickUp = false;
-        this.fishStep=1;        //Multiplicateur de vitesse propre à chaque poisson      
+        this.fishStep=2;        //Multiplicateur de vitesse propre à chaque poisson      
         this.toucheEspace = false;
     }
 
@@ -79,6 +85,7 @@ public class Player extends Entity {
         }
     }
     
+    @Override
     public void rendu(Graphics2D contexte) {
         // Dans le cas où un objet est ramassé on le dessine relativement en dessous du joueur comme s'il était porté
         if(this.hasAPickUp){
@@ -115,14 +122,14 @@ public class Player extends Entity {
     public void setToucheGauche(boolean etat) {
         this.toucheGauche = etat;
         if (etat) {
-            this.sprite = spriteGauche;
+            this.sprite = spriteSheet[0];
         }
     }
     
     public void setToucheDroite(boolean etat) {
         this.toucheDroite = etat;
         if (etat) {
-            this.sprite = spriteDroite;
+            this.sprite = spriteSheet[1];
         }
     }    
     

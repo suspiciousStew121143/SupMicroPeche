@@ -4,6 +4,7 @@
  */
 package jeu;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,10 +16,15 @@ import javax.imageio.ImageIO;
 public class WhaleFish extends Player{
     
     public WhaleFish(){
+        spriteSheet = new BufferedImage[2];
         try {
-            this.spriteDroite = ImageIO.read(getClass().getResource("../assets/ClownfishRight.png"));
-            this.spriteGauche = ImageIO.read(getClass().getResource("../assets/ClownfishLeft.png"));
-            this.sprite = spriteDroite; // par défaut, le poisson regarde à droite
+            BufferedImage tileset = ImageIO.read(getClass().getResource("../resources/Clownfish_32x32.png"));
+            for (int i = 0; i < 2; i++) {
+                int x = i * 32;
+                spriteSheet[i] = tileset.getSubimage(x, 0, 32, 32); // On utilise la même méthode que pour la tilemap pour découper l'image
+            }
+            this.sprite = spriteSheet[1]; // par défaut, le joueur est orienté vers la droite
+            this.isGoingRight = true;
         } catch (IOException ex) {
             Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
         }
