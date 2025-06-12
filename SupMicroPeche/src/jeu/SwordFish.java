@@ -28,8 +28,8 @@ public class SwordFish extends Fish {
         
         
         try {
-            this.spriteDroite = ImageIO.read(getClass().getResource("../resources/SwordFishRight.png"));
-            this.spriteGauche = ImageIO.read(getClass().getResource("../resources/SwordFishLeft.png"));
+            this.spriteDroite = ImageIO.read(getClass().getResource("../assets/SwordFishRight.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("../assets/SwordFishLeft.png"));
             this.sprite = spriteDroite; // par défaut, le poisson regarde à droite
         } catch (IOException ex) {
             Logger.getLogger(SwordFish.class.getName()).log(Level.SEVERE, null, ex);

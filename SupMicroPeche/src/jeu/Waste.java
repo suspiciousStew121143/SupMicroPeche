@@ -18,8 +18,11 @@ import javax.imageio.ImageIO;
 public class Waste extends Entity {
     
     private Boat b;
+    private GestionDBItem db;
 
-    public Waste(Boat b) {
+    public Waste(Boat b, GestionDBItem db) {
+        this.db = db;
+        
         try {
             this.sprite = ImageIO.read(getClass().getResource("../assets/washer.png"));
         } catch (IOException ex) {
@@ -32,13 +35,23 @@ public class Waste extends Entity {
     @Override
     public void miseAJour() {
         y = y + 5;
+        
+        if (hasChanged()){
+            db.updateBase(this);
+            resetChangedFlag();
+        }
     }
 
+    public Boat getBoat() {
+        return b;
+    }
 
-//    public void lancer(Boat b) {
-//        this.x = b.getX();
-//        this.y = b.getY()+b.getHeight();
-//    }
+    public void setBoat(Boat b) {
+        this.b = b;
+    }
+
+    
+    
 
 }
 

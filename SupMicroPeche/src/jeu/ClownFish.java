@@ -29,8 +29,8 @@ public class ClownFish extends Fish{
         this.setFishType("Clown");
         
         try {
-            this.spriteDroite = ImageIO.read(getClass().getResource("../resources/ClownfishRight.png"));
-            this.spriteGauche = ImageIO.read(getClass().getResource("../resources/ClownfishLeft.png"));
+            this.spriteDroite = ImageIO.read(getClass().getResource("../assets/ClownfishRight.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("../assets/ClownfishLeft.png"));
             this.sprite = spriteDroite; // par défaut, le poisson regarde à droite
         } catch (IOException ex) {
             Logger.getLogger(ClownFish.class.getName()).log(Level.SEVERE, null, ex);

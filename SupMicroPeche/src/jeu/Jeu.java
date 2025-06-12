@@ -60,18 +60,18 @@ public class Jeu {
         }
 
         // 2. Sprites
-        for (Item item : this.itemList) {
-            contexte.drawImage(item.sprite, (int) item.getX(), (int) item.getY(), null);
+        for (Waste waste : this.anItemFactory.getItemList()) {
+            contexte.drawImage(waste.sprite, (int) waste.getX(), (int) waste.getY(), null);
         }
 
-        for (Fish fish : this.fishList) {
+        for (Fish fish : this.aFishFactory.getFishList()) {
             contexte.drawImage(fish.sprite, (int) fish.getX(), (int) fish.getY(), null);
         }
         // for (Fish fish : this.aFishFactory.getFishList()) {
         //     fish.rendu(contexte);
         // }
 
-        for (Boat boat : this.boatList) {
+        for (Boat boat : this.aBoatFactory.getBoatList()) {
             contexte.drawImage(boat.sprite, (int) boat.getX(), (int) boat.getY(), null);
         }
 
@@ -82,8 +82,8 @@ public class Jeu {
 
     public void miseAJour() {
         // ===== ITEMS ====
-        for (Item item : this.anItemFactory.getItemList()) {
-            item.miseAJour();
+        for (Waste waste : this.anItemFactory.getItemList()) {
+            waste.miseAJour();
         }
         
         // ===== PLAYERS =====
@@ -100,7 +100,9 @@ public class Jeu {
          // Lâcher de déchêts
         for (Boat boat : this.aBoatFactory.getBoatList()) {
             if(boat.getClock() > 100){
-                this.anItemFactory.createEntity((int) boat.getX(),(int) boat.getY(), (int) boat.getHeight());
+//                this.anItemFactory.createEntity((int) boat.getX(),(int) boat.getY(), (int) boat.getHeight());
+                System.out.println("Jeu MAJ boat : " + boat);
+                this.anItemFactory.createEntity(boat);
                 boat.setClock(0);
             }
         }
@@ -122,11 +124,11 @@ public class Jeu {
     // COLLISIONS
     public boolean fishCollideItem() {
         for (Fish fish : this.aFishFactory.getFishList()) {
-            for (Item item : anItemFactory.getItemList()) {
-                if (!((item.getX() >= fish.getX() + fish.getWidth())    // Trop à droite
-                    || (item.getX() + item.getWidth() <= fish.getX())    // Trop à gauche
-                    || (item.getY() >= fish.getY() + fish.getHeight())   // Trop en bas
-                    || (item.getY() + item.getHeight() <= fish.getY()))) // Trop en haut
+            for (Waste waste : anItemFactory.getItemList()) {
+                if (!((waste.getX() >= fish.getX() + fish.getWidth())    // Trop à droite
+                    || (waste.getX() + waste.getWidth() <= fish.getX())    // Trop à gauche
+                    || (waste.getY() >= fish.getY() + fish.getHeight())   // Trop en bas
+                    || (waste.getY() + waste.getHeight() <= fish.getY()))) // Trop en haut
                 {
                     return false; // Collision détectée
                 }
