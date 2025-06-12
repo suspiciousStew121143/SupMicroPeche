@@ -60,18 +60,18 @@ public class Jeu {
         }
 
         // 2. Sprites
-        for (Item item : this.itemList) {
+        for (Item item : this.anItemFactory.getItemList()) {
             contexte.drawImage(item.sprite, (int) item.getX(), (int) item.getY(), null);
         }
 
-        for (Fish fish : this.fishList) {
+        for (Fish fish : this.aFishFactory.getFishList()) {
             contexte.drawImage(fish.sprite, (int) fish.getX(), (int) fish.getY(), null);
         }
         // for (Fish fish : this.aFishFactory.getFishList()) {
         //     fish.rendu(contexte);
         // }
 
-        for (Boat boat : this.boatList) {
+        for (Boat boat : this.aBoatFactory.getBoatList()) {
             contexte.drawImage(boat.sprite, (int) boat.getX(), (int) boat.getY(), null);
         }
 
