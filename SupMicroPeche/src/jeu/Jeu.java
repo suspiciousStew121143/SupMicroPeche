@@ -66,6 +66,7 @@ public class Jeu {
 
         for (Fish fish : this.aFishFactory.getFishList()) {
             contexte.drawImage(fish.sprite, (int) fish.getX(), (int) fish.getY(), null);
+            fish.rendu(contexte);
         }
         // for (Fish fish : this.aFishFactory.getFishList()) {
         //     fish.rendu(contexte);
