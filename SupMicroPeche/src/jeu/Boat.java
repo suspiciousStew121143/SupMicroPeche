@@ -1,5 +1,5 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+x * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package jeu;
@@ -22,19 +22,23 @@ public class Boat extends Entity{
     
     public Boat(String id){
         spriteSheet = new BufferedImage[2];
+        
+        
         try {
             BufferedImage tileset = ImageIO.read(getClass().getResource("../resources/Boat_128x64.png"));
+
             for (int i = 0; i < 2; i++) {
                 int x = i * 128;
                 spriteSheet[i] = tileset.getSubimage(x, 0, 128, 64); // On utilise la même méthode que pour la tilemap pour découper l'image
             }
+            
+            
             this.sprite = spriteSheet[1]; // par défaut, le bâteau est orienté vers la droite
             this.isGoingRight = true;
         } catch (IOException ex) {
             Logger.getLogger(Boat.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.Id = id;
-        this.sens = true;
         lancer();
     }   
     
@@ -67,6 +71,8 @@ public class Boat extends Entity{
     public void setTimer(int Timer) {
         this.Timer = Timer;
     }
+
+    
     
     @Override
     public void rendu(Graphics2D contexte) {

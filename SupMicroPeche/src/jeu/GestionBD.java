@@ -63,12 +63,12 @@ public class GestionBD extends Jeu{
             // Il faut réussir à mettre un Timer et à l'utiliser régulièrement pour voir si elle fonctionne bien
         try {
             Connection connexion = DriverManager.getConnection("jdbc:mariadb://nemrod.ens2m.fr:3306/2024-2025_s2_vs1_tp2_supmicropêche", "etudiant", "YTDTvj9TR3CDYCmP");
-            PreparedStatement requete = connexion.prepareStatement("UPDATE Boat SET x = ?, y = ?, sens = ? WHERE id = ?");
+            PreparedStatement requete = connexion.prepareStatement("UPDATE Boat SET x = ?, y = ?, isGoingRight = ? WHERE id = ?");
             for (int k = 0; k < boatList.size(); k++) {
                 Boat b = boatList.get(k);
                 requete.setInt(1, b.getX());
                 requete.setInt(2, b.getY());
-                requete.setBoolean(3, b.getSens());
+                requete.setBoolean(3, b.isGoingRight());
                 requete.setString(4, b.getId());
 
                 requete.executeUpdate();

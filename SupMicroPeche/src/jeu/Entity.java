@@ -19,7 +19,6 @@ public class Entity{
     protected float time; // Temps depuis la création d'une entité, pour utiliser certaines Abilitys.
     protected String Id;
     protected int healthBar;
-    protected Boolean sens;
 
     
     public void miseAJour() {
@@ -68,8 +67,8 @@ public class Entity{
         return Id;
     }
     
-    public Boolean getSens(){
-        return sens;
+    public Boolean isGoingRight(){
+        return isGoingRight;
     }
     
     public void setId(String id){

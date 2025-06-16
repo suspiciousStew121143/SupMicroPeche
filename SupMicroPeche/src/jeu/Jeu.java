@@ -24,6 +24,7 @@ public class Jeu {
     public ArrayList<Player> playerList;
     public ItemFactory anItemFactory;
     public BoatFactory aBoatFactory;
+    public BubbleFactory aBubbleFactory;
 
     private ArrayList<Colonne> colonnes;
 
@@ -55,10 +56,11 @@ public class Jeu {
         // -- CREATION D'ENTITES --
         // ========================
         // Uiliser l'usine à entités
-        this.aBoatFactory = new BoatFactory(this);
+        this.aBoatFactory = new BoatFactory();
         this.aBoatFactory.startFactory();       //Démarre l'usine à bateau pour en produire automatiquement
 
-        this.anItemFactory = new ItemFactory(this);
+        this.anItemFactory = new ItemFactory();
+        this.aBubbleFactory = new BubbleFactory();
 
         // this.aBD = new GestionBD();   
         this.colonnes = new ArrayList<>();
@@ -92,6 +94,13 @@ public class Jeu {
             c.rendu(contexte);
         }
 
+        for (Bubble bubble : aBubbleFactory.getBubbleList()) {
+            bubble.rendu(contexte);
+        }
+        if (aBoatFactory.getCounter_animation()<= 7 && aBoatFactory.getCounter_animation() >= 0) {
+            aBoatFactory.boatExplosion(contexte);
+        }
+
         // 3. Texte
         contexte.drawString("Score : " + score, 10, 20);
     }
@@ -113,9 +122,24 @@ public class Jeu {
                 boat.setTimer(0);
             }
         }
+        for (Bubble bubble : aBubbleFactory.getBubbleList()) {
+            bubble.miseAJour(rand);
+            // Lâcher de déchets
+        }
+
+        for (Colonne c : colonnes) {
+            if (c.isActive()) {  // On ne regarde que les colonnes actives
+                int x = c.getX();
+                int y = c.getY();
+                this.aBubbleFactory.bubblePop(rand.nextInt(1, 2), Parameters.windowHeight - (300), (int) x, (int) (y + 20), (int) (x + rand.nextInt(-10, 10) + c.getWidth() / 2));
+                // Tous les arguments donnés à bubblePop peuvent paraître complexes mais en somme on fait partir les bulles du haut de la colonne 
+                // jusqu'à la zone où les déchets sont renvoyés, avec de l'aléatoire pour un côté plus "organique"
+            }
+        }
 
         this.aBoatFactory.boatSuppression();
         this.anItemFactory.CollectableSuppression();
+        this.aBubbleFactory.bubbleSuppression();
 
         for (Player player : this.playerList) {
             player.miseAJour();
@@ -123,10 +147,12 @@ public class Jeu {
 
         // 3. Gérer les interactions (collisions et autres règles)
         fishCollideItem();
-        
+
         boatCollideItem();
-        
+
         removeItemOutOfMap();
+
+        fillBubbleToDeleteList();
 
         // Lâcher de déchêts
         for (Boat boat : this.aBoatFactory.getBoatList()) {
@@ -177,7 +203,6 @@ public class Jeu {
                     System.out.println("Un objet a été laché");
                 }
             }
-
         }
     }
 
@@ -185,33 +210,61 @@ public class Jeu {
         if (!playerList.isEmpty() && !anItemFactory.getCollectableList().isEmpty()) {
             for (Boat boat : this.aBoatFactory.getBoatList()) {
                 for (Collectable collectable : anItemFactory.getCollectableList()) {
-                    if(collectable.getToTheSky())
+                    if (collectable.getToTheSky()) {
                         if (!((collectable.getX() >= boat.getX() + boat.getWidth()) // Trop à droite
                                 || (collectable.getX() + collectable.getWidth() <= boat.getX()) // Trop à gauche
                                 || (collectable.getY() >= boat.getY() + boat.getHeight()) // Trop en bas
                                 || (collectable.getY() + collectable.getHeight() <= boat.getY()))) // Trop en haut
                         {
+                            aBoatFactory.setBoat_x(boat.getX());
+                            aBoatFactory.setBoat_y(boat.getY());
+                            aBoatFactory.setCounter_animation(0);
                             this.aBoatFactory.addBoatToDeleteList(boat);
                         }
-                    
+                    }
+
                 }
             }
         }
         aBoatFactory.boatSuppression();
     }
-    
-    public void removeItemOutOfMap(){
-        if (!anItemFactory.getCollectableList().isEmpty()){
+
+    public void removeItemOutOfMap() {
+        if (!anItemFactory.getCollectableList().isEmpty()) {
             for (Collectable collectable : anItemFactory.getCollectableList()) {
-                if ((collectable.getY() > Parameters.windowHeight) 
-                    || (collectable.getY() < -30) ){
+                if ((collectable.getY() > Parameters.windowHeight)
+                        || (collectable.getY() < -30)) {
                     this.anItemFactory.addCollectableToDeleteList(collectable);
                 }
             }
         }
-        
+
     }
-        
+
+    public void fillBubbleToDeleteList() {
+        for (Bubble b : aBubbleFactory.getBubbleList()) {
+            if (b.getToBeDeleted()) {
+                this.aBubbleFactory.getBubbleToDeleteList().add(b);
+            }
+        }
+    }
+
+    public void activerColonnesAleatoires() { //Permet d'activer les colonnes qui vont apparaitre
+        // D'abord, désactive toutes les colonnes
+        for (Colonne c : colonnes) {
+            c.setActive(false);
+        }
+        // Choisis 2 indices différents au hasard
+        int first = rand.nextInt(colonnes.size());
+        int second;
+        do {
+            second = rand.nextInt(colonnes.size());
+        } while (second == first);
+        Colonne c1 = colonnes.get(first);
+        Colonne c2 = colonnes.get(second);
+        c1.setActive(true);
+        c2.setActive(true);
+    }
 
     // Getters pour accéder aux listes
     public ArrayList<Player> getPlayerList() {
@@ -232,21 +285,6 @@ public class Jeu {
 
     public void setHasJoinedGame(boolean hasJoinedGame) {
         this.hasJoinedGame = hasJoinedGame;
-    }
-
-    public void activerColonnesAleatoires() { //Permet d'activer les colonnes qui vont apparaitre
-        // D'abord, désactive toutes les colonnes
-        for (Colonne c : colonnes) {
-            c.setActive(false);
-        }
-        // Choisis 2 indices différents au hasard
-        int first = rand.nextInt(colonnes.size());
-        int second;
-        do {
-            second = rand.nextInt(colonnes.size());
-        } while (second == first);
-        colonnes.get(first).setActive(true);
-        colonnes.get(second).setActive(true);
     }
 
 }

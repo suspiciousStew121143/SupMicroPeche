@@ -24,6 +24,8 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener 
     private Jeu jeu;
     private Timer timer;
     private Timer timerColonnes;   // Timer pour changer les colonnes actives toutes les 15s
+    
+    
 
     public FenetreDeJeu() {
         // initialisation de la fenetre

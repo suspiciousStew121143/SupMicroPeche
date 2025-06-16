@@ -15,7 +15,7 @@ public class ItemFactory {
     public ArrayList<Collectable> collectableList;
     private ArrayList<Collectable> collectableToDeleteList;
     
-    public ItemFactory(Jeu jeu) {
+    public ItemFactory() {
         this.collectableList = new ArrayList<>();
         this.collectableToDeleteList = new ArrayList<>();
     }

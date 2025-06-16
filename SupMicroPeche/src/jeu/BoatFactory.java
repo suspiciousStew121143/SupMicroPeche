@@ -4,11 +4,18 @@
  */
 package jeu;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+
 /**
  *
  * @author lkerguil
@@ -17,10 +24,25 @@ public class BoatFactory {
 
     private ArrayList<Boat> boatList;
     private ArrayList<Boat> boatToDeleteList;
-    
-    public BoatFactory(Jeu jeu) {
+
+    protected BufferedImage[] spriteSheetExplosion;
+    private int counter_animation;
+    private int boat_x,boat_y;
+
+    public BoatFactory() {
         this.boatList = new ArrayList<>();
         this.boatToDeleteList = new ArrayList<>();
+        spriteSheetExplosion = new BufferedImage[4];
+        this.counter_animation = -1;
+        try {
+        BufferedImage tileset_Explosion = ImageIO.read(getClass().getResource("../resources/Explosion_96x96.png"));
+        for (int i = 0; i < 4; i++) {
+            int x = i * 96;
+            spriteSheetExplosion[i] = tileset_Explosion.getSubimage(x, 0, 96, 96); // On utilise la même méthode que pour la tilemap pour découper l'image
+        }
+        } catch (IOException ex) {
+            Logger.getLogger(Boat.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void createEntity() {
@@ -29,7 +51,7 @@ public class BoatFactory {
         this.boatList.add(b);
         PushBoatInBDWhenCreated(b);
     }
-    
+
     public void deleteEntity(String id) {   //Permet de delete un bateau de la liste et de la base de donnée
         for (Boat b : this.boatList) {
             if (b.getId().equals(id)) {
@@ -39,22 +61,22 @@ public class BoatFactory {
             }
         }
     }
-    
-    public String ReadListAndCreateId(){
-        int nb_boat = this.boatList.size()+1;
+
+    public String ReadListAndCreateId() {
+        int nb_boat = this.boatList.size() + 1;
         String id = "B" + nb_boat;
 //        System.out.println(id);
         return id;
     }
 
-    public void PushBoatInBDWhenCreated(Boat b){   
+    public void PushBoatInBDWhenCreated(Boat b) {
         try {
             Connection connexion = DriverManager.getConnection("jdbc:mariadb://nemrod.ens2m.fr:3306/2024-2025_s2_vs1_tp2_supmicropêche", "etudiant", "YTDTvj9TR3CDYCmP");
             PreparedStatement requete = connexion.prepareStatement("INSERT INTO Boat VALUES (?, ?, ?, ?)");
             requete.setString(1, b.getId());
             requete.setInt(2, b.getX());
             requete.setInt(3, b.getY());
-            requete.setBoolean(4, b.getSens());
+            requete.setBoolean(4, b.isGoingRight());
             requete.executeUpdate();
 
             requete.close();
@@ -62,9 +84,9 @@ public class BoatFactory {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-    }  
-    
-    public void DeleteBoatInBDWhenCreated(Boat b){   //Permet de supprimer un bateau de la base de donnée
+    }
+
+    public void DeleteBoatInBDWhenCreated(Boat b) {   //Permet de supprimer un bateau de la base de donnée
         try {
             Connection connexion = DriverManager.getConnection("jdbc:mariadb://nemrod.ens2m.fr:3306/2024-2025_s2_vs1_tp2_supmicropêche", "etudiant", "YTDTvj9TR3CDYCmP");
             PreparedStatement requete = connexion.prepareStatement("DELETE FROM Boat WHERE id = ?");
@@ -94,16 +116,46 @@ public class BoatFactory {
         this.boatToDeleteList.add(boatToDelete);
     }
     
-    public void boatSuppression(){
-        for (Boat b : boatToDeleteList){
-            this.deleteEntity(b.getId()); 
+    public void boatExplosion(Graphics2D contexte){
+        if(counter_animation > 7){
+            counter_animation = -1;
+        }
+        else if (counter_animation <= 7 && counter_animation >= 0){
+            contexte.drawImage(this.spriteSheetExplosion[(int) (counter_animation/2)], boat_x, (int) boat_y, null);
+            counter_animation += 1;
+        }
+        System.out.println("Counter animation = " + counter_animation);
+    }
+
+    public int getCounter_animation() {
+        return counter_animation;
+    }
+
+    public void setCounter_animation(int counter_animation) {
+        this.counter_animation = counter_animation;
+    }
+
+    public void setBoat_x(int boat_x) {
+        this.boat_x = boat_x;
+    }
+
+    public void setBoat_y(int boat_y) {
+        this.boat_y = boat_y;
+    }
+    
+    
+    
+
+    public void boatSuppression() {
+        for (Boat b : boatToDeleteList) {
+            this.deleteEntity(b.getId());
         }
         this.boatToDeleteList = new ArrayList<>();
     }
-    
+
     public void startFactory() {  //Permet de créer un bateau automatiquement toutes les tant de secondes aléatoirement sur un intervalle
         int delay = 5000 + (int) (Math.random() * 15000); // entre 5000ms (5s) et 20000ms (20s)
-        
+
         new java.util.Timer().schedule(new java.util.TimerTask() {
             @Override
             public void run() {
